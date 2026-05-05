@@ -1,6 +1,14 @@
 Flask
 Flask-SQLAlchemy
+Flask-Migrate
+Flask-Login
+Flask-WTF
+Flask-Mail
 PyMySQL
 gunicorn
-google-generativeai
-Flask-Migrate
+google-genai
+python-dotenv
+pdfkit
+WTForms
+email-validator
+cryptography
