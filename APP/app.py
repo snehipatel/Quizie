@@ -1574,9 +1574,13 @@ def debug_mail_config():
         'MAIL_DEFAULT_SENDER': app.config.get('MAIL_DEFAULT_SENDER')
     })
 
-with app.app_context():
-    db.create_all()
+try:
+    with app.app_context():
+        db.create_all()
+except Exception as e:
+    print(f"Warning: Could not create database tables: {e}")
+
+init_app()
 
 if __name__ == '__main__':
-    init_app() 
     app.run(debug=True)
