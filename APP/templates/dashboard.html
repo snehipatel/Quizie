@@ -1,0 +1,610 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Quizie{% endblock %}
+
+{% block content %}
+<style>
+:root {
+    --primary: #6366F1;
+    --primary-dark: #4338CA;
+    --secondary: #10B981;
+    --accent: #F43F5E;
+    --background: #FAFAFA;
+    --text: #18181B;
+    --math-color: #6366F1;
+    --physics-color: #10B981;
+    --chemistry-color: #F43F5E;
+    --english-color: #f68a5c;
+    --computer-color: #3B82F6;
+    --environment-color: #088935;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --hover-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+/* Dashboard Styles */
+body {
+    background: var(--background);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.animated-bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.floating-circle-left {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: var(--math-color);
+    opacity: 0.1;
+    top: -50px;
+    left: -150px;
+    animation: float 20s infinite linear;
+}
+
+.floating-circle-right {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: var(--math-color);
+    opacity: 0.1;
+    top: -50px;
+    right: -150px;
+    animation: float 20s infinite linear;
+}
+
+.floating-square-left {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: var(--physics-color);
+    opacity: 0.1;
+    bottom: -10px;
+    left: -100px;
+    transform: rotate(45deg);
+    animation: float 20s infinite linear;
+}
+
+.floating-square-right {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: var(--physics-color);
+    opacity: 0.1;
+    bottom: -10px;
+    right: -100px;
+    transform: rotate(45deg);
+    animation: float 20s infinite linear;
+}
+
+.floating-triangle-left {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 260px solid var(--chemistry-color);
+    opacity: 0.1;
+    top: 30%;
+    left: -150px;
+    animation: float 20s infinite linear;
+}
+
+.floating-triangle-right {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 260px solid var(--chemistry-color);
+    opacity: 0.1;
+    top: 30%;
+    right: -150px;
+    animation: float 20s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(30px, 30px) rotate(180deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+.dashboard-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.welcome-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.welcome-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.welcome-subtitle {
+    font-size: 1.5rem;
+    color: var(--text);
+    opacity: 0.7;
+    font-weight: 500;
+}
+
+.subject-card {
+    background: white;
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 2rem;
+}
+
+.subject-card:hover {
+    transform: translateY(-15px);
+    box-shadow: var(--hover-shadow);
+}
+
+.subject-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.mathematics .subject-icon { color: var(--math-color); }
+.physics .subject-icon { color: var(--physics-color); }
+.chemistry .subject-icon { color: var(--chemistry-color); }
+.english .subject-icon { color: var(--english-color); }
+.computer .subject-icon { color: var(--computer-color); }
+.environment .subject-icon { color: var(--environment-color); }
+
+.badge-earned {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+    border-radius: 9999px;
+    color: white;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.badge-earned:hover {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .welcome-title {
+        font-size: 2.5rem;
+    }
+    
+    .dashboard-container {
+        padding: 2rem 1rem;
+    }
+    
+    .subject-card {
+        margin: 1rem;
+    }
+}
+
+.badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.badge-earned {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    color: white;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.badge-earned i {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+.badge-earned:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.no-badges {
+    color: #666;
+    font-style: italic;
+    margin-top: 1rem;
+}
+</style>
+
+<div class="animated-bg">
+    <div class="floating-circle-left"></div>
+    <div class="floating-square-left"></div>
+    <div class="floating-triangle-left"></div>
+    <div class="floating-circle-right"></div>
+    <div class="floating-square-right"></div>
+    <div class="floating-triangle-right"></div>
+</div>
+
+<div class="dashboard-container">
+    <div class="welcome-header">
+        <h1 class="welcome-title">Welcome, {{ session['username'] }}!</h1>
+        <p class="welcome-subtitle">Track your learning progress</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="subject-card mathematics">
+                <div class="subject-icon">
+                    <i class="fas fa-square-root-alt"></i>
+                </div>
+                <h3 class="text-xl font-semibold">Mathematics</h3>
+                <canvas id="mathChart" class="w-full h-48 mb-4"></canvas>
+                <h4 class="font-semibold mt-4 mb-2">Earned Badges</h4>
+                <div id="mathBadges" class="badges-container"></div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="subject-card physics">
+                <div class="subject-icon">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <h3 class="text-xl font-semibold">Physics</h3>
+                <canvas id="physicsChart" class="w-full h-48 mb-4"></canvas>
+                <h4 class="font-semibold mt-4 mb-2">Earned Badges</h4>
+                <div id="physicsBadges" class="badges-container"></div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="subject-card chemistry">
+                <div class="subject-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h3 class="text-xl font-semibold">Chemistry</h3>
+                <canvas id="chemistryChart" class="w-full h-48 mb-4"></canvas>
+                <h4 class="font-semibold mt-4 mb-2">Earned Badges</h4>
+                <div id="chemistryBadges" class="badges-container"></div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="subject-card english">
+                <div class="subject-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3 class="text-xl font-semibold">English</h3>
+                <canvas id="englishChart" class="w-full h-48 mb-4"></canvas>
+                <h4 class="font-semibold mt-4 mb-2">Earned Badges</h4>
+                <div id="englishBadges" class="badges-container"></div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="subject-card computer">
+                <div class="subject-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3 class="text-xl font-semibold">Computer Practices</h3>
+                <canvas id="computerChart" class="w-full h-48 mb-4"></canvas>
+                <h4 class="font-semibold mt-4 mb-2">Earned Badges</h4>
+                <div id="computerBadges" class="badges-container"></div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="subject-card environment">
+                <div class="subject-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3 class="text-xl font-semibold">Environmental Science</h3>
+                <canvas id="environmentChart" class="w-full h-48 mb-4"></canvas>
+                <h4 class="font-semibold mt-4 mb-2">Earned Badges</h4>
+                <div id="environmentBadges" class="badges-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script>
+let currentQuestions = [];
+let currentQuestionIndex = 0;
+let currentLevel = 0;
+let userAnswers = [];
+const subjects = ['math', 'physics', 'chemistry', 'english', 'computer', 'environment'];
+const chartColors = {
+    math: '#6366F1',
+    physics: '#10B981',
+    chemistry: '#F43F5E',
+    english: '#f68a5c',
+    computer: '#3B82F6',
+    environment: '#088935'
+};
+
+// Load progress data for all subjects when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    subjects.forEach(loadSubjectProgress);
+});
+
+function loadSubjectProgress(subject) {
+    console.log(`Loading progress for ${subject}`);
+    fetch(`/progress/${subject}`)
+        .then(response => {
+            console.log(`Response for ${subject}:`, response);
+            return response.json();
+        })
+        .then(data => {
+            console.log(`Data for ${subject}:`, data);
+            if (data.error) {
+                console.log(`Error for ${subject}:`, data.error);
+                createSubjectChart(subject, []);
+                displaySubjectBadges(subject, []);
+            } else {
+                const scores = data.levels ? data.levels.map(level => ({
+                    level: level.level,
+                    score: level.score
+                })) : [];
+                
+                createSubjectChart(subject, scores);
+                displaySubjectBadges(subject, scores);
+            }
+        })
+        .catch(error => {
+            console.error(`Error loading ${subject} progress:`, error);
+            createSubjectChart(subject, []);
+            displaySubjectBadges(subject, []);
+        });
+}
+
+function createSubjectChart(subject, scores) {
+    const ctx = document.getElementById(`${subject}Chart`).getContext('2d');
+    
+    // If no scores, provide default empty data
+    const chartData = scores.length ? scores : [{ level: 1, score: 0 }];
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chartData.map(s => `Level ${s.level}`),
+            datasets: [{
+                label: 'Score',
+                data: chartData.map(s => s.score),
+                borderColor: chartColors[subject],
+                backgroundColor: `${chartColors[subject]}33`,
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `Score: ${context.parsed.y.toFixed(1)}/20`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 20,
+                    ticks: {
+                        stepSize: 5,
+                        callback: function(value) {
+                            return value.toFixed(1);
+                        }
+                    }
+                },
+                x: {
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+}
+
+function calculateEarnedBadges(levels) {
+    const badges = [];
+    
+    // Check each level individually for badges
+    levels.forEach(levelData => {
+        // Perfect score badge (score = 10)
+        if (levelData.score === 20) {
+            badges.push({
+                name: 'Perfect Scorer',
+                description: `Achieved a perfect score in Level ${levelData.level}!`,
+                icon: 'fa-trophy',
+                type: 'perfect',
+                level: levelData.level
+            });
+        }
+
+        // Excellence badge (score >= 7.5)
+        if (levelData.score >= 15) {
+            badges.push({
+                name: 'Excellence',
+                description: `Achieved excellence in Level ${levelData.level}!`,
+                icon: 'fa-medal',
+                type: 'excellence',
+                level: levelData.level
+            });
+        }
+
+        // Improvement badge (three consecutive increasing scores)
+        if (levelData.level >= 3) {
+            const prevLevels = levels
+                .filter(l => l.level >= levelData.level - 2 && l.level < levelData.level)
+                .sort((a, b) => a.level - b.level);
+            
+            if (prevLevels.length === 2 &&
+                prevLevels[0].score < prevLevels[1].score &&
+                prevLevels[1].score < levelData.score) {
+                badges.push({
+                    name: 'Rising Star',
+                    description: `Showed consistent improvement through Level ${levelData.level}!`,
+                    icon: 'fa-rocket',
+                    type: 'improvement',
+                    level: levelData.level
+                });
+            }
+        }
+
+        // Consistency badge (score >= 5 for five consecutive levels)
+        if (levelData.level >= 5) {
+            const prevFiveLevels = levels
+                .filter(l => l.level >= levelData.level - 4 && l.level <= levelData.level);
+            
+            if (prevFiveLevels.length === 5 && prevFiveLevels.every(l => l.score >= 10)) {
+                badges.push({
+                    name: 'Consistent Performer',
+                    description: `Maintained a high score across five consecutive levels!`,
+                    icon: 'fa-chart-line',
+                    type: 'consistency',
+                    level: levelData.level
+                });
+            }
+        }
+
+        // Significant improvement badge (score improvement by at least 2 points)
+        if (levelData.level > 1) {
+            const prevLevel = levels.find(l => l.level === levelData.level - 1);
+            if (prevLevel && levelData.score - prevLevel.score >= 4) {
+                badges.push({
+                    name: 'Significant Improvement',
+                    description: `Improved score by at least 2 points in Level ${levelData.level}!`,
+                    icon: 'fa-arrow-up',
+                    type: 'significant-improvement',
+                    level: levelData.level
+                });
+            }
+        }
+
+        // Dedication badge (completed levels)
+        if (levelData.level > 0) {
+            badges.push({
+                name: 'Dedicated Learner',
+                description: `Completed ${levelData.level} levels!`,
+                icon: 'fa-award',
+                type: 'dedication',
+                level: levelData.level
+            });
+        }
+    });
+    
+    // Sort badges by level, most recent first
+    return badges.sort((a, b) => b.level - a.level);
+}
+
+function displaySubjectBadges(subject, scores) {
+    const container = document.getElementById(`${subject}Badges`);
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (!scores || scores.length === 0) {
+        const noBadgesMsg = document.createElement('p');
+        noBadgesMsg.className = 'no-badges';
+        noBadgesMsg.textContent = 'No badges earned yet';
+        container.appendChild(noBadgesMsg);
+        return;
+    }
+
+    const earnedBadges = calculateEarnedBadges(scores);
+
+    if (earnedBadges.length === 0) {
+        const noBadgesMsg = document.createElement('p');
+        noBadgesMsg.className = 'no-badges';
+        noBadgesMsg.textContent = 'Complete levels to earn badges!';
+        container.appendChild(noBadgesMsg);
+        return;
+    }
+
+    // Count occurrences of each badge type
+    const badgeCounts = earnedBadges.reduce((acc, badge) => {
+        acc[badge.name] = (acc[badge.name] || 0) + 1;
+        return acc;
+    }, {});
+
+    // Display badges with counts
+    Object.entries(badgeCounts).forEach(([badgeName, count]) => {
+        const badge = earnedBadges.find(b => b.name === badgeName);
+        const badgeElement = document.createElement('div');
+        badgeElement.className = 'badge-earned';
+        badgeElement.style.backgroundColor = badge.color || chartColors[subject];
+
+        // Create and add icon
+        const icon = document.createElement('i');
+        icon.className = `fas ${badge.icon}`;
+        badgeElement.appendChild(icon);
+
+        // Add badge name and count
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = ` ${badge.name} (${count})`;
+        badgeElement.appendChild(nameSpan);
+
+        // Add tooltip
+        badgeElement.title = badge.description;
+
+        // Add click handler
+        badgeElement.addEventListener('click', () => {
+            alert(`${badge.name}\n${badge.description}`);
+        });
+
+        container.appendChild(badgeElement);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable text selection
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable copying
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable drag and drop
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,432 @@
+{% extends "base.html" %}
+{% block title %}Level {{level}} Details - Quizie{% endblock %}
+{% block content %}
+<section class="level-details-section">
+    <div class="container">
+        <!-- Summary Header -->
+        <div class="level-header">
+            <h1>{{subject}} - Level {{level}}</h1>
+            <div class="attempt-info">
+                <div class="attempt-stats">
+                    <span class="attempt-date">
+                        <i class="fas fa-calendar"></i> 
+                        Attempted on: {{attempt_date}}
+                    </span>
+                    <span class="score">
+                        <i class="fas fa-star"></i> 
+                        Score: {{score}}
+                    </span>
+                    <span class="total-questions">
+                        <i class="fas fa-list"></i> 
+                        Questions: {{questions|length}}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Questions List -->
+        <div class="questions-container">
+            {% for question in questions %}
+            <div class="question-card {% if question.is_correct %}correct{% else %}incorrect{% endif %}">
+                <!-- Question Header -->
+                <div class="question-header">
+                    <span class="question-number">Question {{ loop.index }}</span>
+                    <span class="status-badge">
+                        {% if question.is_correct %}
+                        <i class="fas fa-check"></i> Correct
+                        {% else %}
+                        <i class="fas fa-times"></i> Incorrect
+                        {% endif %}
+                    </span>
+                </div>
+                
+                <!-- Question Content -->
+                <div class="question-content">
+                    <p class="question-text">{{ question.text }}</p>
+                    
+                    <!-- Options List -->
+                    <div class="options-list">
+                        {% for option in question.options %}
+                        <div class="option 
+                            {% if option == question.selected %}selected{% endif %}
+                            {% if option == question.correct_answer %}correct{% endif %}
+                            {% if option == question.selected and option != question.correct_answer %}wrong{% endif %}">
+                            
+                            <div class="option-content">
+                                <div class="option-marker">
+                                    {% if option == question.selected %}
+                                        {% if option == question.correct_answer %}
+                                            <i class="fas fa-check-circle"></i>  <!-- User selected correctly -->
+                                        {% else %}
+                                            <i class="fas fa-times-circle"></i>  <!-- User selected incorrectly -->
+                                        {% endif %}
+                                    {% elif option == question.correct_answer %}
+                                        <i class="fas fa-check-circle"></i>  <!-- Correct answer not selected -->
+                                    {% else %}
+                                        <i class="far fa-circle"></i>  <!-- Other options -->
+                                    {% endif %}
+                                </div>
+                                <span class="option-text">{{ option }}</span>
+                    
+                                <div class="option-indicators">
+                                    {% if option == question.selected %}
+                                        <span class="indicator selected-indicator">
+                                            <i class="fas fa-user"></i> Your Answer
+                                        </span>
+                                    {% endif %}
+                                    {% if option == question.correct_answer %}
+                                        <span class="indicator correct-indicator">
+                                            <i class="fas fa-check"></i> Correct Answer
+                                        </span>
+                                    {% endif %}
+                                    {% if option == question.selected and option != question.correct_answer %}
+                                        <span class="indicator wrong-indicator">
+                                            <i class="fas fa-times"></i> Incorrect Answer
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>                                       
+                </div>
+                
+                <!-- Explanation -->
+                <div class="explanation">
+                    <h4><i class="fas fa-lightbulb"></i> Explanation:</h4>
+                    <p>{{ question.explanation }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="/profile" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Profile
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+:root{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.wrong-indicator {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+}
+
+.option.wrong {
+    border-color: #EF4444;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.level-details-section {
+    padding: 2rem;
+    background: #f7f9fc;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.level-header {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.level-header h1 {
+    font-size: 2rem;
+    color: #1F2937;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.attempt-info {
+    border-top: 1px solid #E5E7EB;
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.attempt-stats {
+    display: flex;
+    gap: 2rem;
+    color: #6B7280;
+    flex-wrap: wrap;
+}
+
+.attempt-stats span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.question-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-left: 4px solid #9CA3AF;
+}
+
+.question-card.correct {
+    border-left-color: #10B981;
+}
+
+.question-card.incorrect {
+    border-left-color: #EF4444;
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.question-number {
+    font-weight: 600;
+    color: #1F2937;
+    font-size: 1.1rem;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.correct .status-badge {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+}
+
+.incorrect .status-badge {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+}
+
+.question-text {
+    font-size: 1.125rem;
+    color: #1F2937;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.options-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.option {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 2px solid #E5E7EB;
+    transition: all 0.2s;
+}
+
+.option-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.option.selected {
+    border-color: #6366F1;
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.option.selected.wrong {
+    border-color: #EF4444;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.option.correct {
+    border-color: #10B981;
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.option-marker {
+    color: #9CA3AF;
+    font-size: 1.25rem;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.option.selected .option-marker {
+    color: #6366F1;
+}
+
+.option.selected.wrong .option-marker {
+    color: #EF4444;
+}
+
+.option.correct .option-marker {
+    color: #10B981;
+}
+
+.option-text {
+    flex: 1;
+    color: #1F2937;
+}
+
+.option-indicators {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.indicator {
+    padding: 0.25rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.selected-indicator {
+    background: rgba(99, 102, 241, 0.1);
+    color: #6366F1;
+}
+
+.correct-indicator {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+}
+
+.explanation {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: #FEF2F2;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.explanation h4 {
+    color: #991B1B;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.explanation p {
+    color: #7F1D1D;
+    line-height: 1.6;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: #6366F1;
+    color: white;
+    border: none;
+}
+
+.btn-secondary {
+    background: white;
+    color: #6366F1;
+    border: 1px solid #6366F1;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    .level-details-section {
+        padding: 1rem;
+    }
+
+    .level-header {
+        padding: 1.5rem;
+    }
+
+    .question-card {
+        padding: 1.5rem;
+    }
+
+    .attempt-stats {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .option-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .option-indicators {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable text selection
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable copying
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable drag and drop
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+    });
+});
+</script>
+{% endblock %}

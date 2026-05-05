@@ -1,0 +1,917 @@
+{% extends "base.html" %}
+
+{% block title %}Leaderboard - Quizie{% endblock %}
+
+{% block content %}
+<style>
+:root {
+    --primary: #6366F1;
+    --primary-dark: #4338CA;
+    --secondary: #10B981;
+    --accent: #F43F5E;
+    --background: #FAFAFA;
+    --text: #18181B;
+    --math-color: #6366F1;
+    --physics-color: #10B981;
+    --chemistry-color: #F43F5E;
+    --english-color: #f68a5c;
+    --computer-color: #3B82F6;
+    --environment-color: #088935;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    --hover-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    --all-subjects-gradient: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #10B981 100%);
+    font-family: 'Inter', 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Leaderboard Styles */
+body {
+    background: var(--background);
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--text);
+}
+
+.animated-bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.floating-circle-left {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: var(--math-color);
+    opacity: 0.05;
+    top: -50px;
+    left: -150px;
+    animation: float 25s infinite linear;
+}
+
+.floating-circle-right {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: var(--math-color);
+    opacity: 0.05;
+    top: -50px;
+    right: -150px;
+    animation: float 25s infinite linear;
+}
+
+.floating-square-left {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: var(--physics-color);
+    opacity: 0.05;
+    bottom: -10px;
+    left: -100px;
+    transform: rotate(45deg);
+    animation: float 30s infinite linear;
+}
+
+.floating-square-right {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: var(--physics-color);
+    opacity: 0.05;
+    bottom: -10px;
+    right: -100px;
+    transform: rotate(45deg);
+    animation: float 30s infinite linear;
+}
+
+.floating-triangle-left {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 260px solid var(--chemistry-color);
+    opacity: 0.05;
+    top: 30%;
+    left: -150px;
+    animation: float 35s infinite linear;
+}
+
+.floating-triangle-right {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 260px solid var(--chemistry-color);
+    opacity: 0.05;
+    top: 30%;
+    right: -150px;
+    animation: float 35s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(20px, 20px) rotate(180deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+.leaderboard-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+}
+
+.leaderboard-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.leaderboard-title {
+    font-size: 2.75rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.leaderboard-subtitle {
+    font-size: 1.125rem;
+    color: var(--text);
+    opacity: 0.7;
+    font-weight: 400;
+}
+
+.leaderboard-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 0.625rem 1.25rem;
+    border-radius: 12px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: none;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    position: relative;
+    overflow: hidden;
+    will-change: transform, box-shadow;
+}
+
+.tab-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1;
+}
+
+.tab-btn:hover::before {
+    transform: translateY(0);
+}
+
+.tab-btn span {
+    position: relative;
+    z-index: 2;
+}
+
+.tab-btn.active {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.7);
+    transition: all 0.35s ease;
+    transform: translateX(-50%);
+}
+
+.tab-btn.active::after {
+    width: 60%;
+}
+
+/* Special styles for All Subjects button */
+.tab-btn.all {
+    background: var(--all-subjects-gradient);
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.tab-btn.all.active {
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+}
+
+.tab-btn.all::before {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.tab-btn.math {
+    background: linear-gradient(135deg, #6366F1 0%, #4338CA 100%);
+}
+.tab-btn.physics {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+}
+.tab-btn.chemistry {
+    background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%);
+}
+.tab-btn.english {
+    background: linear-gradient(135deg, #f68a5c 0%, #F97316 100%);
+}
+.tab-btn.computer {
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+}
+.tab-btn.environment {
+    background: linear-gradient(135deg, #088935 0%, #047857 100%);
+}
+
+.leaderboard-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.leaderboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+    padding: 1rem;
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+.leaderboard-table th {
+    font-weight: 600;
+    color: #4B5563;
+    background-color: rgba(99, 102, 241, 0.05);
+    border-bottom: 2px solid rgba(99, 102, 241, 0.2);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.leaderboard-table tbody tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+}
+
+.leaderboard-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.leaderboard-table tbody tr:hover {
+    background-color: rgba(99, 102, 241, 0.03);
+    transform: translateY(-2px);
+}
+
+.rank {
+    font-weight: 700;
+    font-size: 1.25rem;
+    width: 50px;
+    text-align: center;
+}
+
+.rank-1 {
+    color: #FFD700;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+}
+
+.rank-2 {
+    color: #C0C0C0;
+    text-shadow: 0 0 5px rgba(192, 192, 192, 0.3);
+}
+
+.rank-3 {
+    color: #CD7F32;
+    text-shadow: 0 0 5px rgba(205, 127, 50, 0.3);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background-color: #f0f0f0;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.username {
+    font-weight: 600;
+    color: var(--primary-dark);
+    font-size: 1rem;
+    transition: color 0.2s ease;
+}
+
+.subject-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.subject-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.625rem;
+    border-radius: 8px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.subject-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.average-score {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.125rem;
+}
+
+.no-data {
+    text-align: center;
+    padding: 3rem;
+    color: #6B7280;
+    font-style: italic;
+}
+
+.refresh-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: none;
+    color: white;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 auto 2rem;
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+    position: relative;
+    overflow: hidden;
+    will-change: transform, box-shadow;
+}
+
+.refresh-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+}
+
+.refresh-btn:hover::before {
+    transform: translateX(0);
+}
+
+.refresh-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(99, 102, 241, 0.4);
+}
+
+.refresh-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(99, 102, 241, 0.3);
+}
+
+/* Added for smoother loading state */
+.loading-shimmer {
+    position: relative;
+    overflow: hidden;
+    background: #f6f7f8;
+    background-image: linear-gradient(
+        to right,
+        #f6f7f8 0%,
+        #edeef1 20%,
+        #f6f7f8 40%,
+        #f6f7f8 100%
+    );
+    background-size: 800px 104px;
+    animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -468px 0;
+    }
+    100% {
+        background-position: 468px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .leaderboard-title {
+        font-size: 2.25rem;
+    }
+    
+    .leaderboard-container {
+        padding: 2rem 1rem;
+    }
+    
+    .leaderboard-table th,
+    .leaderboard-table td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .rank {
+        width: 40px;
+        font-size: 1.125rem;
+    }
+    
+    .avatar {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .subject-col {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .leaderboard-tabs {
+        gap: 0.5rem;
+    }
+    
+    .tab-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    .tab-btn.all {
+        padding: 0.625rem 1.25rem;  
+    }
+    
+    .rank {
+        font-size: 1rem;
+        width: 30px;
+    }
+}
+</style>
+
+<div class="animated-bg">
+    <div class="floating-circle-left"></div>
+    <div class="floating-square-left"></div>
+    <div class="floating-triangle-left"></div>
+    <div class="floating-circle-right"></div>
+    <div class="floating-square-right"></div>
+    <div class="floating-triangle-right"></div>
+</div>
+
+<div class="leaderboard-container">
+    <div class="leaderboard-header">
+        <h1 class="leaderboard-title">Leaderboard</h1>
+        <p class="leaderboard-subtitle">See how you rank against other learners</p>
+    </div>
+
+    <div class="leaderboard-tabs">
+        <button class="tab-btn all active" data-subject="all"><span>All Subjects</span></button>
+        <button class="tab-btn math" data-subject="math"><span>Mathematics</span></button>
+        <button class="tab-btn physics" data-subject="physics"><span>Physics</span></button>
+        <button class="tab-btn chemistry" data-subject="chemistry"><span>Chemistry</span></button>
+        <button class="tab-btn english" data-subject="english"><span>English</span></button>
+        <button class="tab-btn computer" data-subject="computer"><span>Computer</span></button>
+        <button class="tab-btn environment" data-subject="environment"><span>Environment</span></button>
+    </div>
+
+    <button class="refresh-btn" id="refreshBtn">
+        <i class="fas fa-sync-alt"></i> Refresh Leaderboard
+    </button>
+
+    <div class="leaderboard-card">
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th class="subject-col">Subject Scores</th>
+                    <th>Average Score</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+                <tr>
+                    <td colspan="4" class="no-data loading-shimmer">Loading leaderboard data...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const currentUserId = "{{ session['user_id'] }}";
+let activeSubject = 'all';
+const subjectColors = {
+    math: '#6366F1',
+    physics: '#10B981',
+    chemistry: '#F43F5E',
+    english: '#f68a5c',
+    computer: '#3B82F6',
+    environment: '#088935'
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Add some preloading styles to make transitions smoother
+    document.body.classList.add('preload');
+    setTimeout(() => document.body.classList.remove('preload'), 300);
+    
+    // Initial leaderboard load
+    loadLeaderboard(activeSubject);
+    
+    // Set up tab buttons
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    tabButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            // Prevent rapid clicking
+            if (button.classList.contains('active')) return;
+            if (button.getAttribute('data-processing') === 'true') return;
+            
+            // Mark as processing to prevent multiple clicks
+            button.setAttribute('data-processing', 'true');
+            
+            // Create ripple effect
+            createRippleEffect(e);
+            
+            // Update active button with smooth transition
+            tabButtons.forEach(btn => {
+                if (btn !== button && btn.classList.contains('active')) {
+                    btn.classList.add('fade-out');
+                    setTimeout(() => {
+                        btn.classList.remove('active');
+                        btn.classList.remove('fade-out');
+                    }, 200);
+                }
+            });
+            
+            // Add active class with slight delay for better animation
+            setTimeout(() => {
+                button.classList.add('active');
+                
+                // Update active subject and load leaderboard
+                activeSubject = button.dataset.subject;
+                loadLeaderboard(activeSubject);
+                
+                // Remove processing flag after animation completes
+                setTimeout(() => {
+                    button.removeAttribute('data-processing');
+                }, 500);
+            }, 150);
+        });
+    });
+    
+    // Set up refresh button with enhanced animation
+    const refreshBtn = document.getElementById('refreshBtn');
+    refreshBtn.addEventListener('click', (e) => {
+        // Prevent rapid clicking
+        if (refreshBtn.getAttribute('data-processing') === 'true') return;
+        refreshBtn.setAttribute('data-processing', 'true');
+        
+        // Create ripple effect
+        createRippleEffect(e);
+        
+        // Button animation
+        refreshBtn.style.transform = 'scale(0.95)';
+        const icon = refreshBtn.querySelector('i');
+        icon.classList.add('fa-spin');
+        
+        setTimeout(() => {
+            refreshBtn.style.transform = '';
+            loadLeaderboard(activeSubject);
+            
+            setTimeout(() => {
+                icon.classList.remove('fa-spin');
+                refreshBtn.removeAttribute('data-processing');
+            }, 500);
+        }, 300);
+    });
+    
+    // Auto-refresh every 60 seconds
+    setInterval(() => {
+        loadLeaderboard(activeSubject, true); // true for quiet refresh
+    }, 60000);
+});
+
+// Function to create ripple effect
+function createRippleEffect(event) {
+    const button = event.currentTarget;
+    const circle = document.createElement('span');
+    const diameter = Math.max(button.clientWidth, button.clientHeight);
+    const radius = diameter / 2;
+    
+    const rect = button.getBoundingClientRect();
+    const x = event.clientX - rect.left - radius;
+    const y = event.clientY - rect.top - radius;
+    
+    circle.style.width = circle.style.height = `${diameter}px`;
+    circle.style.left = `${x}px`;
+    circle.style.top = `${y}px`;
+    circle.classList.add('ripple');
+    
+    // Remove existing ripples
+    const ripple = button.getElementsByClassName('ripple')[0];
+    if (ripple) {
+        ripple.remove();
+    }
+    
+    button.appendChild(circle);
+    
+    // Remove ripple after animation
+    setTimeout(() => {
+        if (circle) {
+            circle.remove();
+        }
+    }, 600);
+}
+
+// Add styles for smoother transitions
+const style = document.createElement('style');
+style.textContent = `
+    .preload * {
+        transition: none !important;
+    }
+    
+    .ripple {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        transform: scale(0);
+        animation: rippleEffect 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+    }
+    
+    @keyframes rippleEffect {
+        to {
+            transform: scale(4);
+            opacity: 0;
+        }
+    }
+    
+    .fade-out {
+        opacity: 0.5;
+        transform: scale(0.95);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .tab-btn, .refresh-btn {
+        position: relative;
+        overflow: hidden;
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+    }
+    
+    .tab-btn.active, .refresh-btn:hover {
+        transform: translate3d(0, -3px, 0);
+    }
+    
+    .row-entering {
+        animation: enterRow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    @keyframes enterRow {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .row-highlight {
+        animation: highlightFlash 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    @keyframes highlightFlash {
+        0%, 100% { background-color: transparent; }
+        50% { background-color: rgba(99, 102, 241, 0.1); }
+    }
+`;
+document.head.appendChild(style);
+
+function loadLeaderboard(subject, quiet = false) {
+    const leaderboardBody = document.getElementById('leaderboardBody');
+    
+    if (!quiet) {
+        leaderboardBody.innerHTML = `
+            <tr>
+                <td colspan="4" class="no-data loading-shimmer">
+                    <div style="height: 20px; margin-bottom: 10px; width: 80%;"></div>
+                    <div style="height: 20px; width: 60%;"></div>
+                </td>
+            </tr>
+        `;
+    }
+    
+    // Smooth transition for table
+    const leaderboardCard = document.querySelector('.leaderboard-card');
+    leaderboardCard.style.transition = 'opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+    
+    if (!quiet) {
+        leaderboardCard.style.opacity = '0.8';
+    }
+    
+    fetch(`/api/leaderboard/${subject}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                leaderboardBody.innerHTML = `<tr><td colspan="4" class="no-data">Error loading leaderboard: ${data.error}</td></tr>`;
+                return;
+            }
+            
+            if (!data.users || data.users.length === 0) {
+                leaderboardBody.innerHTML = '<tr><td colspan="4" class="no-data">No data available yet</td></tr>';
+                return;
+            }
+            
+            // Add smooth transition
+            setTimeout(() => {
+                renderLeaderboard(data.users);
+                leaderboardCard.style.opacity = '1';
+            }, quiet ? 0 : 200);
+        })
+        .catch(error => {
+            console.error('Error loading leaderboard:', error);
+            leaderboardBody.innerHTML = '<tr><td colspan="4" class="no-data">Failed to load leaderboard. Please try again.</td></tr>';
+        });
+}
+
+function renderLeaderboard(users) {
+    const leaderboardBody = document.getElementById('leaderboardBody');
+    leaderboardBody.innerHTML = '';
+    
+    users.forEach((user, index) => {
+        const rank = index + 1;
+        const isCurrentUser = String(user.user_id) === String(currentUserId);
+        
+        const row = document.createElement('tr');
+        if (isCurrentUser) {
+            row.classList.add('user-row-current');
+        }
+        
+        // Rank column
+        const rankCell = document.createElement('td');
+        rankCell.className = `rank${rank <= 3 ? ' rank-' + rank : ''}`;
+        rankCell.textContent = rank;
+        row.appendChild(rankCell);
+        
+        // User info column
+        const userCell = document.createElement('td');
+        const userInfo = document.createElement('div');
+        userInfo.className = 'user-info';
+        
+        const avatar = document.createElement('div');
+        avatar.className = 'avatar';
+        const avatarImg = document.createElement('img');
+        avatarImg.src = `/static/img/${user.avatar || 'avatar1.jpg'}`;
+        avatarImg.alt = user.username;
+        avatar.appendChild(avatarImg);
+        
+        const username = document.createElement('div');
+        username.className = 'username';
+        username.textContent = user.username;
+        
+        userInfo.appendChild(avatar);
+        userInfo.appendChild(username);
+        userCell.appendChild(userInfo);
+        row.appendChild(userCell);
+        
+        // Subject scores column
+        const subjectScoresCell = document.createElement('td');
+        subjectScoresCell.className = 'subject-col';
+        
+        const subjectBadges = document.createElement('div');
+        subjectBadges.className = 'subject-badges';
+        
+        const subjects = ['math', 'physics', 'chemistry', 'english', 'computer', 'environment'];
+        subjects.forEach(subject => {
+            if (user.subject_scores && user.subject_scores[subject]) {
+                const badge = document.createElement('span');
+                badge.className = 'subject-badge';
+                badge.style.backgroundColor = `${subjectColors[subject]}15`; // 15% opacity
+                badge.style.color = subjectColors[subject];
+                badge.innerHTML = `${capitalizeFirstLetter(subject)}: ${user.subject_scores[subject].toFixed(1)}`;
+                subjectBadges.appendChild(badge);
+            }
+        });
+        
+        subjectScoresCell.appendChild(subjectBadges);
+        row.appendChild(subjectScoresCell);
+        
+        // Average score column
+        const averageScoreCell = document.createElement('td');
+        averageScoreCell.className = 'average-score';
+        averageScoreCell.textContent = user.average_score.toFixed(2);
+        row.appendChild(averageScoreCell);
+        
+        // Add reveal animation
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(10px)';
+        
+        leaderboardBody.appendChild(row);
+        
+        // Trigger animation with slight delay for each row
+        setTimeout(() => {
+            row.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, index * 50);
+    });
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable text selection
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable copying
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable drag and drop
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+    });
+});
+</script>
+{% endblock %}

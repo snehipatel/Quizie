@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waste U-Turn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .login-container {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: conic-gradient(
+                from 0deg,
+                #f8fff9 0%,
+                #e2fbe8 10%,
+                #a8e6c1 20%,
+                #43bc7e 30%,
+                #399f6c 40%,
+                #1f7a4d 50%,
+                #399f6c 60%,
+                #43bc7e 70%,
+                #a8e6c1 80%,
+                #e2fbe8 90%,
+                #f8fff9 100%
+            );
+            animation: rotateGradient 10s linear infinite;
+            z-index: -1;
+            filter: blur(5px);
+        }
+
+        @keyframes rotateGradient {
+            0% {
+            transform: rotate(0deg);
+            }
+            100% {
+            transform: rotate(360deg);
+            }
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .floating-element {
+            position: absolute;
+            opacity: 0.05;
+            z-index: 0;
+            animation: 
+                float 10s ease-in-out infinite alternate,
+                subtleRotate 15s linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(50px) rotate(10deg); }
+        }
+        @keyframes subtleRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .form-container {
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        }
+        .form-control:focus {
+            border-color: #047857;
+            box-shadow: 0 0 0 0.2rem rgba(4, 120, 87, 0.25);
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+            margin-top: 20px;
+        }
+
+        .text-emerald-800 {
+            color: #065f46;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container flex items-center justify-center p-4">
+        <div class="grid md:grid-cols-5 bg-white rounded-2xl shadow-2xl w-full max-w-5xl overflow-hidden form-container">
+            <!-- Left Side - Image/Branding Column -->
+            <div class="hidden md:block md:col-span-2 bg-emerald-900 text-white p-8 flex flex-col justify-between">
+                <div>
+
+                    <h2 class="text-3xl font-bold mb-6 text-emerald-100">Waste U-Turn</h2>
+                    <p class="text-emerald-200 mb-8">Transforming Waste Management through Innovative Solutions</p>
+                    
+                    <div class="space-y-4 mt-8">
+                        <div class="flex items-center">
+                            <div class="bg-emerald-800 p-3 rounded-full mr-4 shadow-md">
+                                <i class="fas fa-chart-line text-emerald-300"></i>
+                            </div>
+                            <p class="text-emerald-100">Advanced Waste Analytics</p>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-emerald-800 p-3 rounded-full mr-4 shadow-md">
+                                <i class="fas fa-truck text-emerald-300"></i>
+                            </div>
+                            <p class="text-emerald-100">Efficient Collection</p>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-emerald-800 p-3 rounded-full mr-4 shadow-md">
+                                <i class="fas fa-leaf text-emerald-300"></i>
+                            </div>
+                            <p class="text-emerald-100">Sustainable Practices</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-auto">
+                    <p class="text-sm text-emerald-300">&copy; 2025 Waste Management Solutions</p>
+                </div>
+            </div>
+            
+            <!-- Right Side - Login Form Column -->
+            <div class="md:col-span-3 p-8 md:p-12 bg-white">
+                <div class="mb-8">
+                    <h1 class="text-2xl font-bold text-emerald-900 mb-2">Welcome Back!</h1>
+                    <p class="text-emerald-700">Secure Access to Waste Management Dashboard</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('login') }}" class="space-y-6">
+                    {{ form.csrf_token if form }}
+                    
+                    <!-- Username Field -->
+                    <div class="space-y-2">
+                        <label for="username" class="text-sm font-medium text-emerald-900">Username</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-user text-emerald-600"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="username" 
+                                name="username" 
+                                class="pl-10 block w-full px-4 py-3 text-emerald-900 bg-gray-50 border border-emerald-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600"
+                                placeholder="Enter your username"
+                                required
+                                autofocus
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="space-y-2">
+                        <label for="password" class="text-sm font-medium text-emerald-900">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-emerald-600"></i>
+                            </div>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="pl-10 block w-full px-4 py-3 text-emerald-900 bg-gray-50 border border-emerald-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600"
+                                placeholder="Enter your password"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Remember Me and Forgot Password -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input 
+                                type="checkbox" 
+                                id="remember" 
+                                name="remember" 
+                                class="h-4 w-4 text-emerald-700 focus:ring-emerald-600 border-emerald-300 rounded"
+                            >
+                            <label for="remember" class="ml-2 block text-sm text-emerald-800">
+                                Remember me
+                            </label>
+                        </div>
+                        <a href="#" class="text-sm font-medium text-emerald-800 hover:text-emerald-700">
+                            Forgot password?
+                        </a>
+                    </div>
+
+                    <!-- Login Button -->
+                    <button 
+                        type="submit" 
+                        class="w-full py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-emerald-700 hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-600 transition-all duration-300"
+                    >
+                        Sign In
+                    </button>
+                </form>
+                
+                <!-- Company info - mobile only -->
+                <div class="mt-8 text-center md:hidden">
+                    <p class="text-sm text-emerald-800">&copy; 2025 Waste Management Solutions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

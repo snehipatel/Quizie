@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366F1;
+            --primary-dark: #4338CA;
+            --secondary: #10B981;
+            --accent: #F43F5E;
+            --yellow: #FBBF24;
+        }
+
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            font-family: 'Georgia', serif;
+            background: white;
+            padding: 20px;
+        }
+
+        .certificate {
+            width: 1000px;
+            height: 600px;
+            position: relative;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5ff 100%);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 50px;
+        }
+
+        /* Geometric Background Elements */
+        .geometric-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .square {
+            position: absolute;
+        }
+
+        .triangle {
+            position: absolute;
+        }
+
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(45deg, rgba(99, 102, 241, 0.1), rgba(16, 185, 129, 0.1));
+            top: -100px;
+            left: -100px;
+        }
+
+        .triangle-1 {
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-bottom: 240px solid rgba(244, 63, 94, 0.144);
+            top: 170px;
+            left: -80px;
+            position: absolute;
+            transform: rotate(15deg);
+        }
+
+        .triangle-2 {
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-bottom: 240px solid rgba(244, 63, 94, 0.144);
+            bottom: 170px;
+            right: -140px;
+            position: absolute;
+            transform: rotate(100deg);
+        }
+
+        .square-1 {
+            width: 200px;
+            height: 200px;
+            background: rgba(16, 185, 129, 0.144);
+            bottom: -50px;
+            left: -50px;
+            transform: rotate(45deg);
+        }
+
+        .square-2 {
+            width: 200px;
+            height: 200px;
+            background: rgba(16, 185, 129, 0.144);
+            top: -50px;
+            right: -40px;
+            transform: rotate(55deg);
+        }
+
+        .circle-2 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(45deg, rgba(16, 185, 129, 0.1), rgba(99, 102, 241, 0.1));
+            bottom: -100px;
+            right: -100px;
+        }
+
+        .dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .wave {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(-45deg, rgba(67, 56, 202, 0.1), rgba(99, 102, 241, 0.1));
+            border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #4338CA;
+            margin-bottom: 20px;
+            background: linear-gradient(180deg, var(--primary-dark), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Garamond', serif;
+        }
+
+        .title {
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Garamond', serif;
+        }
+
+        .recipient {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .description {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 80%;
+        }
+
+        .highlight {
+            color: #10B981;
+            font-weight: bold;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(16, 185, 129, 0.1));
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.2em;
+            color: #4338CA;
+            font-weight: bold;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 100%;
+            padding: 0 50px;
+        }
+
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 100px;
+            align-items: flex-end;
+        }
+
+        .signature {
+            text-align: center;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .signature img {
+            width: 300px;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: -50px;
+        }
+
+        .signature:last-child img {
+            transform: rotate(-20deg);
+            width: 250px;
+            margin-bottom: -35px;
+        }
+
+        .sign-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #6366F1, #10B981);
+            margin-bottom: 5px;
+        }
+
+        .sign-title {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .border {
+            position: absolute;
+            inset: 0;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #6366F1, #10B981) border-box;
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) padding-box,
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <!-- Geometric Background -->
+        <div class="geometric-elements">
+            <div class="dots"></div>
+            <div class="circle circle-1"></div>
+            <div class="circle circle-2"></div>
+            <div class="square square-1"></div>
+            <div class="square square-2"></div>
+            <div class="triangle triangle-1"></div>
+            <div class="triangle triangle-2"></div>
+            <div class="wave"></div>
+        </div>
+
+        <!-- Border -->
+        <div class="border"></div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="logo">Quizie</div>
+                <h1 class="title">Certificate of Completion</h1>
+                <div class="recipient">Pihoo S. Patel</div>
+            </div>
+
+            <div class="description">
+                Has successfully completed <span class="highlight">50 levels</span> of 
+                <span class="highlight">Advanced JavaScript Programming</span>
+                with outstanding performance and dedication to learning.
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-label">Starting Date</div>
+                    <div class="stat-value">Jan 15, 2024</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Completion Date</div>
+                    <div class="stat-value">Feb 14, 2024</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Time Invested</div>
+                    <div class="stat-value">45 Hours</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Average Score</div>
+                    <div class="stat-value">92%</div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="signatures">
+                    <div class="signature">
+                        <img src="signature.png" alt="Course Instructor Signature">
+                        <div class="sign-line"></div>
+                        <div class="sign-title">Director</div>
+                    </div>
+                    <div class="signature">
+                        <img src="stamp.png" alt="Director Stamp">
+                        <div class="sign-line"></div>
+                        <div class="sign-title">Stamp</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,821 @@
+{% extends "base.html" %}
+{% block title %}Subject Selection - Quizie{% endblock %}
+{% block content %}
+<section class="subjects-section">
+    <!-- Animated Background Elements -->
+    <div class="animated-bg">
+        <div class="floating-circle math"></div>
+        <div class="floating-square physics"></div>
+        <div class="floating-triangle chemistry"></div>
+        <div class="floating-dots"></div>
+    </div>
+
+    <div class="animated-bg">
+        <div class="floating-circle math"></div>
+        <div class="floating-square physics"></div>
+        <div class="floating-triangle chemistry"></div>
+        <div class="floating-dots"></div>
+        <!-- New floating elements -->
+        <div class="floating-plus"></div>
+        <div class="floating-x"></div>
+        <div class="floating-wave"></div>
+        <div class="floating-rings"></div>
+        <div class="molecule-group">
+            <div class="atom"></div>
+            <div class="atom"></div>
+            <div class="atom"></div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="welcome-header">
+            <div class="welcome-title-wrapper">
+                <h1 class="welcome-title">Welcome to Quizie</h1>
+                <div class="title-underline"></div>
+            </div>
+            <p class="welcome-subtitle">Embark on your learning journey</p>
+        </div>
+        
+        <div class="subjects-grid">
+            <a href="{{ url_for('quiz', subject='math') }}" class="subject-card mathematics" data-subject="math">
+                <div class="card-content">
+                    <div class="subject-icon-wrapper">
+                        <div class="icon-container">
+                            <i class="fas fa-square-root-alt"></i>
+                            <div class="icon-bg"></div>
+                        </div>
+                    </div>
+                    <h2>Mathematics</h2>
+                    <p>Master numbers, algebra, and geometry through interactive lessons</p>
+                    <!-- Achievement tag will be inserted here by JavaScript -->
+                    <div class="achievement-container"></div>
+                    <div class="card-footer">
+                        <span class="start-learning">Start Learning</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Similar updates for physics and chemistry cards -->
+            <a href="{{ url_for('quiz', subject='physics') }}" class="subject-card physics" data-subject="physics">
+                <div class="card-content">
+                    <div class="subject-icon-wrapper">
+                        <div class="icon-container">
+                            <i class="fas fa-atom"></i>
+                            <div class="icon-bg"></div>
+                        </div>
+                    </div>
+                    <h2>Physics</h2>
+                    <p>Explore the fundamental laws that govern our universe</p>
+                    <div class="achievement-container"></div>
+                    <div class="card-footer">
+                        <span class="start-learning">Start Learning</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="{{ url_for('quiz', subject='chemistry') }}" class="subject-card chemistry" data-subject="chemistry">
+                <div class="card-content">
+                    <div class="subject-icon-wrapper">
+                        <div class="icon-container">
+                            <i class="fas fa-flask"></i>
+                            <div class="icon-bg"></div>
+                        </div>
+                    </div>
+                    <h2>Chemistry</h2>
+                    <p>Discover the fascinating world of elements and reactions</p>
+                    <div class="achievement-container"></div>
+                    <div class="card-footer">
+                        <span class="start-learning">Start Learning</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- New English Card -->
+            <a href="{{ url_for('quiz', subject='english') }}" class="subject-card english" data-subject="english">
+                <div class="card-content">
+                    <div class="subject-icon-wrapper">
+                        <div class="icon-container">
+                            <i class="fas fa-book"></i>
+                            <div class="icon-bg"></div>
+                        </div>
+                    </div>
+                    <h2>English</h2>
+                    <p>Enhance your language skills through literature and grammar</p>
+                    <div class="achievement-container"></div>
+                    <div class="card-footer">
+                        <span class="start-learning">Start Learning</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- New Computer Practices Card -->
+            <a href="{{ url_for('quiz', subject='computer') }}" class="subject-card computer" data-subject="computer">
+                <div class="card-content">
+                    <div class="subject-icon-wrapper">
+                        <div class="icon-container">
+                            <i class="fas fa-laptop-code"></i>
+                            <div class="icon-bg"></div>
+                        </div>
+                    </div>
+                    <h2>Computer Practices</h2>
+                    <p>Learn programming, algorithms, and digital literacy</p>
+                    <div class="achievement-container"></div>
+                    <div class="card-footer">
+                        <span class="start-learning">Start Learning</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- New Environmental Sciences Card -->
+            <a href="{{ url_for('quiz', subject='environment') }}" class="subject-card environment" data-subject="environment">
+                <div class="card-content">
+                    <div class="subject-icon-wrapper">
+                        <div class="icon-container">
+                            <i class="fas fa-leaf"></i>
+                            <div class="icon-bg"></div>
+                        </div>
+                    </div>
+                    <h2>Environmental Science</h2>
+                    <p>Understand ecosystems, climate, and environmental conservation</p>
+                    <div class="achievement-container"></div>
+                    <div class="card-footer">
+                        <span class="start-learning">Start Learning</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>           
+        </div>
+    </div>
+</section>
+
+<style>
+:root {
+    --primary: #6366F1;
+    --primary-dark: #4338CA;
+    --secondary: #10B981;
+    --accent: #F43F5E;
+    --background: #F5F7FA;
+    --text: #18181B;
+    --math-color: #6366F1;
+    --physics-color: #10B981;
+    --chemistry-color: #F43F5E;
+    --english-color: #f68a5c;
+    --computer-color: #3B82F6;
+    --environment-color: #088935;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --hover-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.english .icon-bg { background: var(--english-color); }
+.computer .icon-bg { background: var(--computer-color); }
+.environment .icon-bg { background: var(--environment-color); }
+
+.english i { color: var(--english-color); }
+.computer i { color: var(--computer-color); }
+.environment i { color: var(--environment-color); }
+
+.floating-letters {
+    position: absolute;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--english-color);
+    opacity: 0.15;
+    top: 40%;
+    right: 25%;
+    animation: floatSlow 15s infinite linear;
+}
+
+.floating-code {
+    position: absolute;
+    font-size: 2rem;
+    color: var(--computer-color);
+    opacity: 0.15;
+    bottom: 30%;
+    left: 35%;
+    animation: floatFast 12s infinite linear;
+}
+
+.floating-leaf {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: var(--environment-color);
+    opacity: 0.15;
+    clip-path: path('M20,0 C20,0 0,20 0,40 C0,40 20,40 20,40 C20,40 40,40 40,40 C40,20 20,0 20,0');
+    top: 60%;
+    left: 15%;
+    animation: floatSlow 18s infinite linear;
+}
+
+/* Subject-specific achievement colors for new subjects */
+.english .achievement-tag {
+    background: var(--english-color);
+}
+
+.computer .achievement-tag {
+    background: var(--computer-color);
+}
+
+.environment .achievement-tag {
+    background: var(--environment-color);
+}
+
+.achievement-container {
+    width: 100%;
+    margin: 0.5rem 0 1.5rem 0;
+    min-height: 50px; /* Maintains space even when no achievement */
+}
+
+.achievement-tag {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.achievement-tag .achievement-title {
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    font-size: 1rem;
+}
+
+.achievement-tag .achievement-description {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.subject-card:hover .achievement-tag {
+    transform: translateY(-3px);
+}
+
+/* Subject-specific achievement colors */
+.mathematics .achievement-tag {
+    background: linear-gradient(135deg, var(--math-color) 0%, var(--primary-dark) 100%);
+}
+
+.physics .achievement-tag {
+    background: linear-gradient(135deg, var(--physics-color) 0%, #059669 100%);
+}
+
+.chemistry .achievement-tag {
+    background: linear-gradient(135deg, var(--chemistry-color) 0%, #BE123C 100%);
+}
+
+@media (max-width: 768px) {
+    .achievement-tag {
+        padding: 0.6rem 1rem;
+    }
+    
+    .achievement-tag .achievement-title {
+        font-size: 0.9rem;
+    }
+    
+    .achievement-tag .achievement-description {
+        font-size: 0.8rem;
+    }
+}
+
+.subjects-section {
+    min-height: 100vh;
+    background: var(--background);  /* Using the new background color */
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 0;
+}
+
+.animated-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.floating-circle,
+.floating-square,
+.floating-triangle {
+    position: absolute;
+    opacity: 0.1;
+    animation: float 20s infinite linear;
+}
+
+.floating-circle {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: var(--math-color);
+    top: -150px;
+    left: -150px;
+}
+
+.floating-square {
+    width: 200px;
+    height: 200px;
+    background: var(--physics-color);
+    bottom: -100px;
+    left: 500px;
+    transform: rotate(45deg);
+}
+
+
+.floating-triangle {
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 260px solid var(--chemistry-color);
+    top: 30%;
+    right: -150px;
+}
+
+.floating-dots {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, #000 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.03;  /* Slightly reduced opacity to better match new background */
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(30px, 30px) rotate(180deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+.floating-plus {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 20%;
+    left: 15%;
+    opacity: 0.15;
+}
+
+.floating-plus::before,
+.floating-plus::after {
+    content: '';
+    position: absolute;
+    background: var(--math-color);
+}
+
+.floating-plus::before {
+    width: 100%;
+    height: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.floating-plus::after {
+    height: 100%;
+    width: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.floating-x {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    
+    bottom: 5%;
+    right: 10%;
+    opacity: 0.15;
+    transform: rotate(45deg);
+}
+
+.floating-x::before,
+.floating-x::after {
+    content: '';
+    position: absolute;
+    background: var(--physics-color);
+    width: 100%;
+    height: 6px;
+    top: 50%;
+    left: 0;
+}
+
+.floating-x::before {
+    transform: rotate(45deg);
+}
+
+.floating-x::after {
+    transform: rotate(-45deg);
+}
+
+.floating-wave {
+    position: absolute;
+    width: 200px;
+    height: 60px;
+    left: 50%;
+    top: 15%;
+    opacity: 0.1;
+    transform: translateX(-50%);
+}
+
+.floating-wave::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        var(--secondary),
+        var(--secondary) 10px,
+        transparent 10px,
+        transparent 20px
+    );
+}
+
+.floating-rings {
+    position: absolute;
+    right: 15%;
+    top: 20%;
+}
+
+.floating-rings::before,
+.floating-rings::after {
+    content: '';
+    position: absolute;
+    border: 4px solid var(--accent);
+    border-radius: 50%;
+    opacity: 0.1;
+}
+
+.floating-rings::before {
+    width: 60px;
+    height: 60px;
+}
+
+.floating-rings::after {
+    width: 40px;
+    height: 40px;
+    top: 10px;
+    left: 10px;
+}
+
+.molecule-group {
+    position: absolute;
+    left: 20%;
+    bottom: 10%;
+}
+
+.atom {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--chemistry-color);
+    border-radius: 50%;
+    opacity: 0.15;
+}
+
+.atom:nth-child(1) {
+    top: 0;
+    left: 20px;
+}
+
+.atom:nth-child(2) {
+    top: 30px;
+    left: 0;
+}
+
+.atom:nth-child(3) {
+    top: 30px;
+    left: 40px;
+}
+
+/* Enhanced animations */
+@keyframes floatSlow {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(20px, -20px) rotate(180deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes floatFast {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-15px, 15px) rotate(-180deg); }
+    100% { transform: translate(0, 0) rotate(-360deg); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.15; }
+    50% { transform: scale(1.2); opacity: 0.2; }
+    100% { transform: scale(1); opacity: 0.15; }
+}
+
+.floating-plus,
+.floating-x {
+    animation: floatSlow 15s infinite linear;
+}
+
+.floating-wave {
+    animation: floatFast 12s infinite linear;
+}
+
+.floating-rings::before,
+.floating-rings::after {
+    animation: pulse 8s infinite ease-in-out;
+}
+
+.molecule-group {
+    animation: floatSlow 18s infinite linear;
+}
+
+.atom {
+    animation: pulse 6s infinite ease-in-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .floating-plus,
+    .floating-x,
+    .floating-wave,
+    .floating-rings,
+    .molecule-group {
+        transform: scale(0.7);
+    }
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.welcome-header {
+    text-align: center;
+    margin-bottom: 6rem;
+}
+
+.welcome-title-wrapper {
+    display: inline-block;
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.welcome-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.title-underline {
+    height: 4px;
+    width: 60%;
+    margin: 0 auto;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 2px;
+}
+
+.welcome-subtitle {
+    font-size: 1.5rem;
+    color: var(--text);
+    opacity: 0.7;
+    font-weight: 500;
+}
+
+.subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem;
+    padding: 2rem;
+}
+
+.subject-card {
+    background: white;
+    border-radius: 24px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--card-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.subject-card:hover {
+    transform: translateY(-15px);
+    box-shadow: var(--hover-shadow);
+}
+
+.card-content {
+    padding: 3rem 2rem;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.subject-icon-wrapper {
+    margin-bottom: 2rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.icon-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-container i {
+    font-size: 2.5rem;
+    position: relative;
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+.icon-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    opacity: 0.15;
+    transition: transform 0.3s ease;
+}
+
+.mathematics .icon-bg { background: var(--math-color); }
+.physics .icon-bg { background: var(--physics-color); }
+.chemistry .icon-bg { background: var(--chemistry-color); }
+
+.mathematics i { color: var(--math-color); }
+.physics i { color: var(--physics-color); }
+.chemistry i { color: var(--chemistry-color); }
+
+.subject-card:hover .icon-container i {
+    transform: scale(1.1);
+}
+
+.subject-card:hover .icon-bg {
+    transform: translate(-50%, -50%) scale(1.3);
+}
+
+.subject-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.subject-card p {
+    color: var(--text);
+    opacity: 0.7;
+    line-height: 1.7;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.start-learning {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.card-footer i {
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+}
+
+.subject-card:hover .card-footer i {
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .welcome-title {
+        font-size: 2.5rem;
+    }
+    
+    .subjects-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 2rem;
+    }
+    
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .subject-card {
+        margin: 0 1rem;
+    }
+
+    .icon-container {
+        width: 70px;
+        height: 70px;
+    }
+
+    .icon-container i {
+        font-size: 2rem;
+    }
+}
+</style>
+<script>
+// Function to get the highest achievement based on level
+function getHighestAchievement(level) {
+    const achievementTiers = [
+        { level: 50, title: '👑 Champion', description: 'Completed all 50 levels!' },
+        { level: 40, title: '🌠 Expert', description: 'Dominated 40 levels!' },
+        { level: 30, title: '✨ Advanced Explorer', description: 'Conquered 30 levels!' },
+        { level: 20, title: '💫 Intermediate', description: 'Mastered 20 levels!' },
+        { level: 10, title: '🌟 Beginner Master', description: 'Completed first 10 levels!' }
+    ];
+    
+    return achievementTiers.find(tier => level >= tier.level) || null;
+}
+ 
+async function fetchAndDisplayAchievements() {
+    const subjects = ['math', 'physics', 'chemistry', 'english', 'computer', 'environment'];
+    
+    for (const subject of subjects) {
+        try {
+            const response = await fetch(`/progress/${subject}`).catch(error => {
+                console.error(`Fetch error for ${subject}:`, error);
+                return { error: true };
+            });
+            const data = await response.json();
+            
+            if (!data.error && data.levels && data.levels.length > 0) {
+                const level = Math.max(...data.levels.map(l => l.level));
+                const achievement = getHighestAchievement(level);
+                
+                if (achievement) {
+                    const card = document.querySelector(`.subject-card[data-subject="${subject}"]`);
+                    if (card) {
+                        const container = card.querySelector('.achievement-container');
+                        if (container) {
+                            container.innerHTML = `
+                                <div class="achievement-tag">
+                                    <span class="achievement-title">${achievement.title}</span>
+                                    <span class="achievement-description">${achievement.description}</span>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error(`Error fetching ${subject} achievements:`, error);
+        }
+    }
+}
+    
+document.addEventListener('DOMContentLoaded', fetchAndDisplayAchievements);
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable text selection
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable copying
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable drag and drop
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+    });
+});
+</script>
+{% endblock %}

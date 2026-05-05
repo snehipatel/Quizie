@@ -1,0 +1,1861 @@
+{% extends "base.html" %}
+{% block title %}Profile - Quizie{% endblock %}
+{% block content %}
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<section class="profile-section">
+    <!-- Animated Background Elements -->
+    <div class="animated-bg">
+        <div class="floating-circle-left"></div>
+        <div class="floating-square-left"></div>
+        <div class="floating-triangle-left"></div>
+        <div class="floating-circle-right"></div>
+        <div class="floating-square-right"></div>
+        <div class="floating-triangle-right"></div>
+    </div>
+    
+    <div class="container">
+        <!-- Subject Progress Section -->
+        <div class="welcome-header">
+            <div class="welcome-title-wrapper">
+                <h1 class="welcome-title">Your Learning Journey</h1>
+                <div class="title-underline"></div>
+            </div>
+            <p class="welcome-subtitle">Track your progress across subjects</p>
+        </div>
+
+        <section class="profile-section">
+            <div class="profile-container">
+              <!-- Enhanced Profile Card -->
+            <div class="profile-card">
+                <!-- Decorative Background Elements -->
+                <div class="profile-background">
+                <div class="bg-circle"></div>
+                <div class="bg-square"></div>
+                <div class="bg-dots"></div>
+                </div>
+                
+                <div class="profile-content">
+                <!-- Enhanced Avatar Section -->
+                <div class="avatar-section">
+                <div class="avatar-ring">
+                <div class="avatar-wrapper">
+                    <img src="{{ url_for('static', filename='img/' + user.avatar) }}" alt="User Avatar" id="profile-image">
+                    <div class="avatar-status"></div>
+                </div>
+                </div>
+                <div class="avatar-badges">
+                <span class="badge expert" id="user-level-badge">{{ user.level }}</span>
+                <span class="badge streak">{{ user.study_streak }} Days</span>
+                </div>
+                </div>
+                
+                <!-- User Info Section -->
+                <div class="user-info">
+                <h2 class="user-name">{{ user.name }}</h2>
+                <p class="user-handle">@{{ user.name|lower }}{{ user.level }}</p>
+                
+                <!-- Achievement Cards -->
+                <div class="achievement-cards">
+                <div class="achievement-card math">
+                    <div class="achievement-icon">
+                    <i class="fas fa-award"></i>
+                    </div>
+                    <div class="achievement-details">
+                        <span class="achievement-value" id="total-badges">0</span>
+                        <span class="achievement-label">Badges</span>
+                    </div>
+                </div>
+                
+                <div class="achievement-card physics">
+                    <div class="achievement-icon">
+                    <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="achievement-details">
+                    <span class="achievement-value" id="success-rate">0</span>
+                    <span class="achievement-label">Success Rate</span>
+                    </div>
+                </div>
+                
+                <div class="achievement-card streak">
+                    <div class="achievement-icon">
+                    <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="achievement-details">
+                    <span class="achievement-value">{{ user.study_streak }}</span>
+                    <span class="achievement-label">Streak</span>
+                    </div>
+                </div>
+                </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </section>
+        
+        <div class="stats-grid">
+            <!-- Math Stats -->
+            <div class="subject-stats mathematics">
+                <div class="stats-header">
+                    <div class="subject-icon-wrapper">
+                        <div class="icon-container">
+                            <i class="fas fa-square-root-alt"></i>
+                            <div class="icon-bg"></div>
+                        </div>
+                    </div>
+                    <h2>Mathematics</h2>
+                </div>
+                
+                <div class="stats-content">
+                    <div class="stat-card">
+                        <span class="stat-label">Current Level</span>
+                        <div class="stat-value" id="math-current-level">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Average Score</span>
+                        <div class="stat-value" id="math-avg-score">-%</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Completed Levels</span>
+                        <div class="stat-value" id="math-completed-levels">-</div>
+                    </div>
+                </div>
+                
+                <div class="level-buttons-container">
+                    <h3 class="level-section-title">Available Levels</h3>
+                    <div class="level-grid">
+                        {% for i in range(1, 51) %}
+                        <button class="level-button math-level">Level {{i}}</button>
+                        {% endfor %}
+                    </div>
+                    <div>  
+                        <a href="{{ url_for('generate_certificate', subject='math') }}" target="_blank" class="certificate-button">Download Certificate</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Physics Stats -->
+            <div class="subject-stats physics">
+                <div class="stats-header">
+                    <div class="subject-icon-wrapper">
+                        <div class="icon-container">
+                            <i class="fas fa-atom"></i>
+                            <div class="icon-bg"></div>
+                        </div>
+                    </div>
+                    <h2>Physics</h2>
+                </div>
+                
+                <div class="stats-content">
+                    <div class="stat-card">
+                        <span class="stat-label">Current Level</span>
+                        <div class="stat-value" id="physics-current-level">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Average Score</span>
+                        <div class="stat-value" id="physics-avg-score">-%</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Completed Levels</span>
+                        <div class="stat-value" id="physics-completed-levels">-</div>
+                    </div>
+                </div>
+                
+                <div class="level-buttons-container">
+                    <h3 class="level-section-title">Available Levels</h3>
+                    <div class="level-grid">
+                        {% for i in range(1, 51) %}
+                        <button class="level-button physics-level">Level {{i}}</button>
+                        {% endfor %}
+                    </div>
+                    <div>  
+                        <a href="{{ url_for('generate_certificate', subject='physics') }}" target="_blank" class="certificate-button">Download Certificate</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chemistry Stats -->
+            <div class="subject-stats chemistry">
+                <div class="stats-header">
+                    <div class="subject-icon-wrapper">
+                        <div class="icon-container">
+                            <i class="fas fa-flask"></i>
+                            <div class="icon-bg"></div>
+                        </div>
+                    </div>
+                    <h2>Chemistry</h2>
+                </div>
+                
+                <div class="stats-content">
+                    <div class="stat-card">
+                        <span class="stat-label">Current Level</span>
+                        <div class="stat-value" id="chemistry-current-level">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Average Score</span>
+                        <div class="stat-value" id="chemistry-avg-score">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Completed Levels</span>
+                        <div class="stat-value" id="chemistry-completed-levels">-%</div>
+                    </div>
+                </div>
+                
+                <div class="level-buttons-container">
+                    <h3 class="level-section-title">Available Levels</h3>
+                    <div class="level-grid">
+                        {% for i in range(1, 51) %}
+                        <button class="level-button chemistry-level">Level {{i}}</button>
+                        {% endfor %}
+                    </div>
+                    <div>  
+                        <a href="{{ url_for('generate_certificate', subject='chemistry') }}" target="_blank" class="certificate-button">Download Certificate</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- English Stats -->
+            <div class="subject-stats english">
+                <div class="stats-header">
+                    <div class="subject-icon-wrapper">
+                        <div class="icon-container">
+                            <i class="fas fa-book"></i>
+                            <div class="icon-bg"></div>
+                        </div>
+                    </div>
+                    <h2>English</h2>
+                </div>
+                
+                <div class="stats-content">
+                    <div class="stat-card">
+                        <span class="stat-label">Current Level</span>
+                        <div class="stat-value" id="english-current-level">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Average Score</span>
+                        <div class="stat-value" id="english-avg-score">-%</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Completed Levels</span>
+                        <div class="stat-value" id="english-completed-levels">-</div>
+                    </div>
+                </div>
+                
+                <div class="level-buttons-container">
+                    <h3 class="level-section-title">Available Levels</h3>
+                    <div class="level-grid">
+                        {% for i in range(1, 51) %}
+                        <button class="level-button english-level">Level {{i}}</button>
+                        {% endfor %}
+                    </div>
+                    <div>  
+                        <a href="{{ url_for('generate_certificate', subject='english') }}" target="_blank" class="certificate-button">Download Certificate</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Computer Stats -->
+            <div class="subject-stats computer">
+                <div class="stats-header">
+                    <div class="subject-icon-wrapper">
+                        <div class="icon-container">
+                            <i class="fas fa-laptop-code"></i>
+                            <div class="icon-bg"></div>
+                        </div>
+                    </div>
+                    <h2>Computer Practices</h2>
+                </div>
+                
+                <div class="stats-content">
+                    <div class="stat-card">
+                        <span class="stat-label">Current Level</span>
+                        <div class="stat-value" id="computer-current-level">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Average Score</span>
+                        <div class="stat-value" id="computer-avg-score">-%</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Completed Levels</span>
+                        <div class="stat-value" id="computer-completed-levels">-</div>
+                    </div>
+                </div>
+                
+                <div class="level-buttons-container">
+                    <h3 class="level-section-title">Available Levels</h3>
+                    <div class="level-grid">
+                        {% for i in range(1, 51) %}
+                        <button class="level-button computer-level">Level {{i}}</button>
+                        {% endfor %}
+                    </div>
+                    <div>  
+                        <a href="{{ url_for('generate_certificate', subject='computer') }}" target="_blank" class="certificate-button">Download Certificate</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Environmental Stats -->
+            <div class="subject-stats environment">
+                <div class="stats-header">
+                    <div class="subject-icon-wrapper">
+                        <div class="icon-container">
+                            <i class="fas fa-leaf"></i>
+                            <div class="icon-bg"></div>
+                        </div>
+                    </div>
+                    <h2>Environmental Science</h2>
+                </div>
+                
+                <div class="stats-content">
+                    <div class="stat-card">
+                        <span class="stat-label">Current Level</span>
+                        <div class="stat-value" id="environment-current-level">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Average Score</span>
+                        <div class="stat-value" id="environment-avg-score">-%</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Completed Levels</span>
+                        <div class="stat-value" id="environment-completed-levels">-</div>
+                    </div>
+                </div>
+                
+                <div class="level-buttons-container">
+                    <h3 class="level-section-title">Available Levels</h3>
+                    <div class="level-grid">
+                        {% for i in range(1, 51) %}
+                        <button class="level-button environment-level">Level {{i}}</button>
+                        {% endfor %}
+                    </div>
+                    <div>  
+                        <a href="{{ url_for('generate_certificate', subject='environment') }}" target="_blank" class="certificate-button">Download Certificate</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Avatar Selection Modal -->
+            <div id="avatarModal" class="avatar-modal">
+                <div class="avatar-modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2>Choose Your Avatar</h2>
+                    <div class="avatar-grid">
+                        {% for i in range(1, 6) %}
+                        <div class="avatar-option {% if current_user.avatar == 'avatar' + i|string + '.jpg' %}selected{% endif %}" data-avatar="avatar{{i}}.jpg">
+                            <img src="{{ url_for('static', filename='img/avatar' + i|string + '.jpg') }}" alt="Avatar {{i}}">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+:root {
+  --primary: #6366F1;
+  --primary-dark: #4338CA;
+  --secondary: #10B981;
+  --accent: #F43F5E;
+  --text: #1F2937;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --physics-color: #10B981;
+  --chemistry-color: #F43F5E;
+  --english-color: #f68a5c;
+  --computer-color: #3B82F6;
+  --environmental-color: #088935;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+/* Certificate Button Styles */
+.certificate-button {
+    position: relative;
+    display: block;
+    background: linear-gradient(135deg, #FFC107 0%, #FF80A0 50%, #80D4FF 100%);
+    color: white;   
+    padding: 12px 20px;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    text-align: center;
+}
+
+.certificate-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(66, 230, 149, 0.6);
+}
+
+/* Confetti container */
+.confetti-container {
+    position: absolute;
+    width: 100%;
+    height: 0;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 5;
+}
+
+/* Individual confetti particles */
+.confetti-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    opacity: 0;
+    animation: none;
+}
+
+/* Animation for falling confetti */
+@keyframes confettiFall {
+    0% {
+        opacity: 1;
+        transform: translateY(0) translateX(0) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(100px) translateX(var(--tx)) rotate(var(--rot));
+    }
+}
+
+.stats-grid-container {
+    margin-top: 3rem;
+}
+
+/* Notification Styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem;
+    border-radius: 4px;
+    z-index: 1000;
+}
+
+.notification.success {
+    background-color: #4caf50;
+    color: white;
+}
+
+.notification.error {
+    background-color: #f44336;
+    color: white;
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Ensure selected avatar state persists */
+.avatar-option.selected {
+    position: relative;
+}
+
+.avatar-option.selected::after {
+    content: '✓';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #6366F1;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    border: 2px solid white;
+}
+
+/* Avatar Modal Styles */
+.avatar-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.avatar-modal-content {
+    position: relative;
+    background-color: white;
+    margin: 15% auto;
+    padding: 2rem;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s ease;
+}
+
+.avatar-modal h2 {
+    color: #1F2937;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #6B7280;
+    transition: color 0.2s ease;
+}
+
+.close-modal:hover {
+    color: #1F2937;
+}
+
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+.avatar-option {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    border-radius: 50%;
+    overflow: hidden;
+    aspect-ratio: 1;
+    position: relative;
+}
+
+.avatar-option img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 3px solid transparent;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.avatar-option:hover {
+    transform: scale(1.05);
+}
+
+.avatar-option:hover img {
+    border-color: #6366F1;
+}
+
+.avatar-option.selected img {
+    border-color: #6366F1;
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #6366F1;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .avatar-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+    
+    .avatar-modal-content {
+        margin: 30% auto;
+        padding: 1.5rem;
+        width: 95%;
+    }
+}
+
+.profile-section {
+      min-height: 50vh;
+      padding: 2rem;
+      background: linear-gradient(135deg, #f6f8fd 0%, #f1f4f9 100%);
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    .profile-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .profile-card {
+      background: white;
+      border-radius: 30px;
+      padding: 3rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Decorative Background Elements */
+    .profile-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .bg-circle {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(45deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.05));
+      border-radius: 50%;
+      top: -100px;
+      right: -100px;
+    }
+
+    .bg-square {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(45deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+      transform: rotate(45deg);
+      bottom: 1 0px;
+      left: -80px;
+    }
+
+    .bg-dots {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: 0.5;
+    }
+
+    .profile-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 3rem;
+      align-items: center;
+    }
+
+.avatar-section {
+    text-align: center;
+    position: relative;
+}
+
+.avatar-ring {
+    width: 180px;
+    height: 180px;
+    background: conic-gradient(from 0deg, #6366F1, #10B981, #6366F1);
+    border-radius: 50%;
+    padding: 4px;
+    position: relative;
+}
+
+/* Create a pseudo-element for the rotating effect */
+.avatar-ring::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #6366F1, #10B981, #6366F1);
+    animation: rotate 4s linear infinite;
+}
+
+.avatar-wrapper {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 50%;
+    padding: 4px;
+    position: relative;
+    cursor: pointer;
+    z-index: 1; /* Ensure wrapper stays above the rotating ring */
+}
+
+.avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    position: relative;
+    z-index: 2; /* Ensure image stays above everything */
+    transition: transform 0.3s ease;
+}
+
+.avatar-wrapper:hover img {
+    transform: scale(1.05);
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+    .avatar-badges {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .badge {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge.expert {
+      background: linear-gradient(45deg, #6366F1, #8B5CF6);
+      color: white;
+    }
+
+    .badge.streak {
+      background: linear-gradient(45deg, #F43F5E, #FB7185);
+      color: white;
+    }
+
+    /* User Info Section */
+    .user-info {
+      flex: 1;
+    }
+
+    .user-name {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(45deg, #1F2937, #4B5563);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .user-handle {
+      font-size: 1.1rem;
+      color: #6B7280;
+      margin-bottom: 2rem;
+    }
+
+    /* Achievement Cards */
+    .achievement-cards {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .achievement-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .achievement-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .achievement-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .achievement-card.math .achievement-icon {
+      background: linear-gradient(45deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.2));
+      color: #6366F1;
+    }
+
+    .achievement-card.physics .achievement-icon {
+      background: linear-gradient(45deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2));
+      color: #10B981;
+    }
+
+    .achievement-card.streak .achievement-icon {
+      background: linear-gradient(45deg, rgba(244, 63, 94, 0.1), rgba(244, 63, 94, 0.2));
+      color: #F43F5E;
+    }
+
+    .achievement-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .achievement-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1F2937;
+    }
+
+    .achievement-label {
+      font-size: 0.875rem;
+      color: #6B7280;
+    }
+
+    @media (max-width: 768px) {
+      .profile-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .achievement-cards {
+        flex-direction: column;
+      }
+
+      .profile-card {
+        padding: 2rem;
+      }
+
+      .user-name {
+        font-size: 2rem;
+      }
+    }
+
+/* Animated Background */
+.animated-bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.floating-circle-left,
+.floating-circle-right,
+.floating-square-left,
+.floating-square-right,
+.floating-triangle-left,
+.floating-triangle-right 
+.floating-dots {
+  position: absolute;
+  opacity: 0.1;
+  animation: float 20s infinite linear;
+}
+
+.floating-circle-left {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: var(--primary);
+    opacity: 0.1;
+    top: -50px;
+    left: -150px;
+    animation: float 20s infinite linear;
+}
+
+.floating-circle-right {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: var(--primary);
+    opacity: 0.1;
+    top: -50px;
+    right: -150px;
+    animation: float 20s infinite linear;
+}
+
+.floating-square-left {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: var(--physics-color);
+    opacity: 0.1;
+    bottom: -10px;
+    left: -100px;
+    transform: rotate(45deg);
+    animation: float 20s infinite linear;
+}
+
+.floating-square-right {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: var(--physics-color);
+    opacity: 0.1;
+    bottom: -10px;
+    right: -100px;
+    transform: rotate(45deg);
+    animation: float 20s infinite linear;
+}
+
+.floating-triangle-left {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 260px solid var(--chemistry-color);
+    opacity: 0.1;
+    top: 30%;
+    left: -150px;
+    animation: float 20s infinite linear;
+}
+
+.floating-triangle-right {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 260px solid var(--chemistry-color);
+    opacity: 0.1;
+    top: 30%;
+    right: -150px;
+    animation: float 20s infinite linear;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(20px, 20px) rotate(180deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+/* Welcome Section */
+.welcome-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-title {
+    font-size: 3rem;
+    background: linear-gradient(135deg, var(--primary) 20%, var(--primary-dark) 40%, var(--secondary) 70%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+    font-weight: bold;  
+}
+
+.title-underline {
+  width: 100px;
+  height: 4px;
+  background: var(--primary);
+  margin: 1rem auto;
+  border-radius: 2px;
+}
+
+.welcome-subtitle {
+  font-size: 1.25rem;
+  color: var(--text);
+  opacity: 0.8;
+}
+
+/* Subject Stats Cards */
+.subject-stats {
+    background: white;
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+    opacity: 0.9; /* Added opacity */
+    position: relative;
+    z-index: 1;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.subject-stats:hover {
+  transform: translateY(-5px);
+  opacity: 1;
+}
+
+.subject-stats.mathematics { border-top: 4px solid var(--primary); }
+.subject-stats.physics { border-top: 4px solid var(--physics-color); }
+.subject-stats.chemistry { border-top: 4px solid var(--chemistry-color); }
+.subject-stats.english { border-top: 4px solid var(--english-color); }
+.subject-stats.computer { border-top: 4px solid var(--computer-color); }
+.subject-stats.environment { border-top: 4px solid var(--environmental-color); }
+
+.subject-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  margin-right: 1rem;
+}
+
+.icon-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  position: relative;
+}
+
+.mathematics .icon-container { background: rgba(99, 102, 241, 0.1); }
+.physics .icon-container { background: rgba(16, 185, 129, 0.1); }
+.chemistry .icon-container { background: rgba(244, 63, 94, 0.1); }
+.english .icon-container { background: rgba(246, 138, 92, 0.1); }
+.computer .icon-container { background: rgba(59, 130, 246, 0.1); }
+.environment .icon-container { background: rgba(8, 137, 53, 0.1); }
+
+.mathematics .icon-container i { color: var(--primary); }
+.physics .icon-container i { color: var(--physics-color); }
+.chemistry .icon-container i { color: var(--chemistry-color); }
+.english .icon-container i { color: var(--english-color); }
+.computer .icon-container i { color: var(--computer-color); }
+.environment .icon-container i { color: var(--environmental-color); }
+
+/* Badge Styles */
+.badge-item {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+}
+
+.badge-item h4 {
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.badge-level {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  color: var(--primary);
+  margin-top: 0.5rem;
+}
+
+.no-badges-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-title {
+    font-size: 2rem;
+  }
+  
+  .stat-card {
+    padding: 1rem;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
+  }
+}
+
+.level-buttons-container {
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.level-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text);
+}
+
+.level-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 0.5rem;
+}
+
+.level-button {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    border: 1px solid;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+/* Mathematics level buttons */
+.math-level {
+    background-color: rgba(99, 102, 241, 0.05);
+    border-color: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+}
+
+.math-level:hover {
+    background-color: rgba(99, 102, 241, 0.2);
+}
+
+.math-level.completed {
+    background-color: rgba(99, 102, 241, 0.3);
+    border-color: rgba(99, 102, 241, 0.4);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Physics level buttons */
+.physics-level {
+    background-color: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.2);
+    color: var(--physics-color);
+}
+
+.physics-level:hover {
+    background-color: rgba(16, 185, 129, 0.2);
+}
+
+.physics-level.completed {
+    background-color: rgba(16, 185, 129, 0.3);
+    border-color: rgba(16, 185, 129, 0.4);
+    color: var(--physics-color);
+    font-weight: 600;
+}
+
+/* Chemistry level buttons */
+.chemistry-level {
+    background-color: rgba(244, 63, 94, 0.1);
+    border-color: rgba(244, 63, 94, 0.2);
+    color: var(--chemistry-color);
+}
+
+.chemistry-level:hover {
+    background-color: rgba(244, 63, 94, 0.2);
+}
+
+.chemistry-level.completed {
+    background-color: rgba(244, 63, 94, 0.3);
+    border-color: rgba(244, 63, 94, 0.4);
+    color: var(--chemistry-color);
+    font-weight: 600;
+}
+
+/* English level buttons */
+.english-level {
+    background-color: rgba(246, 138, 92, 0.1);
+    border-color: rgba(246, 138, 92, 0.2);
+    color: var(--english-color);
+}
+
+.english-level:hover {
+    background-color: rgba(246, 138, 92, 0.2);
+}
+
+.english-level.completed {
+    background-color: rgba(246, 138, 92, 0.3);
+    border-color: rgba(246, 138, 92, 0.4);
+    color: var(--english-color);
+    font-weight: 600;
+}
+
+/* Computer level buttons */
+.computer-level {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.2);
+    color: var(--computer-color);
+}
+
+.computer-level:hover {
+    background-color: rgba(59, 130, 246, 0.2);
+}
+
+.computer-level.completed {
+    background-color: rgba(59, 130, 246, 0.3);
+    border-color: rgba(59, 130, 246, 0.4);
+    color: var(--computer-color);
+    font-weight: 600;
+}
+
+/* Environmental level buttons */
+.environment-level {
+    background-color: rgba(8, 137, 53, 0.1);
+    border-color: rgba(8, 137, 53, 0.2);
+    color: var(--environmental-color);
+}
+
+.environment-level:hover {
+    background-color: rgba(8, 137, 53, 0.2);
+}
+
+.environment-level.completed {
+    background-color: rgba(8, 137, 53, 0.3);
+    border-color: rgba(8, 137, 53, 0.4);
+    color: var(--environmental-color);
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .level-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .level-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .level-button {
+        font-size: 0.75rem;
+        padding: 0.4rem;
+    }
+}
+
+/* Inherit existing styles from subject selection page */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 2rem;
+}
+
+.subject-stats {
+    background: white;
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+}
+
+.stats-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.stats-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: rgba(99, 102, 241, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin: 0.5rem 0;
+}
+
+.stat-label {
+    color: var(--text);
+    font-size: 0.875rem;
+    opacity: 0.7;
+}
+
+.badges-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .stats-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .subject-stats {
+        margin: 0 1rem;
+    }
+}
+</style>
+
+<script>
+// Disable Right-Click, Text Selection, and Copying
+document.addEventListener('DOMContentLoaded', function() {
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable text selection
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable copying
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable drag and drop
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+    });
+});
+
+// Avatar Modal Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('avatarModal');
+    const profileImage = document.getElementById('profile-image');
+    const closeBtn = document.querySelector('.close-modal');
+    const avatarOptions = document.querySelectorAll('.avatar-option');
+    
+    if (!modal || !profileImage || !closeBtn || avatarOptions.length === 0) {
+        console.error("One or more elements not found.");
+        return; // Prevent errors if elements are missing
+    }
+
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => notification.remove(), 3000);
+    }
+
+    profileImage.addEventListener('click', () => {
+        modal.style.display = 'block';
+    });
+
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    avatarOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const selectedAvatar = this.dataset.avatar;
+            if (!selectedAvatar) {
+                console.error("Avatar data not found.");
+                return;
+            }
+
+            fetch('/update-avatar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content // Ensure CSRF token is included
+                },
+                body: JSON.stringify({ avatar: selectedAvatar })
+            })
+
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    profileImage.src = `/static/img/${selectedAvatar}`;
+                    showNotification('Avatar updated successfully!', 'success');
+                    modal.style.display = 'none';
+                    avatarOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                } else {
+                    showNotification(data.error || 'Failed to update avatar', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating avatar:', error);
+                showNotification('Failed to update avatar', 'error');
+            });
+        });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const subjects = ['math', 'physics', 'chemistry', 'english', 'computer', 'environment'];
+    let subjectsLoaded = 0;
+    let totalBadges = 0;
+    let totalScore = 0;
+    let totalMaxScore = 0;
+    let totalLevelsCompleted = 0;
+
+    function calculateBadgesForSubject(levels) {
+        let subjectBadges = 0;
+        
+        // Count badges for each level
+        levels.forEach(levelData => {
+            // Perfect score badge
+            if (levelData.score === 20) {
+                subjectBadges++;
+            }
+            
+            // Excellence badge
+            if (levelData.score === 7.5) {
+                subjectBadges++;
+            }
+            
+            // Rising star badge (improvement over 3 levels)
+            if (levelData.level >= 3) {
+                const prevLevels = levels
+                    .filter(l => l.level >= levelData.level - 2 && l.level < levelData.level)
+                    .sort((a, b) => a.level - b.level);
+                
+                if (prevLevels.length === 2 &&
+                    prevLevels[1].score > prevLevels[0].score &&
+                    levelData.score > prevLevels[1].score) {
+                    subjectBadges++;
+                }
+            }
+        });
+        
+        return subjectBadges;
+    }
+
+    function loadSubjectProgress(subject) {
+        fetch(`/progress/${subject}`)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.error) {
+                    if (!data.reset && data.levels) {
+                        // Count badges for this subject
+                        const subjectBadges = calculateBadgesForSubject(data.levels);
+                        totalBadges += subjectBadges;
+                        
+                        // Update other stats
+                        totalLevelsCompleted += data.levels.length;
+                        data.levels.forEach(level => {
+                            if (level.score !== undefined) {
+                                totalScore += level.score;
+                                totalMaxScore += 10;
+                            }
+                        });
+                        
+                        updateSubjectStats(subject, data);
+                    }
+                }
+                
+                subjectsLoaded++;
+                if (subjectsLoaded === subjects.length) {
+                    updateOverallStats();
+                }
+            })
+            .catch(error => {
+                console.error(`Error loading ${subject} progress:`, error);
+                subjectsLoaded++;
+                if (subjectsLoaded === subjects.length) {
+                    updateOverallStats();
+                }
+            });
+    }
+
+    function updateOverallStats() {
+        // Update total badges count with the calculated value
+        const badgeElement = document.getElementById('total-badges');
+        if (badgeElement) {
+            badgeElement.textContent = totalBadges;
+        }
+        
+        // Update success rate
+        const successRate = totalMaxScore > 0 ? Math.round((totalScore / totalMaxScore) * 100) : 0;
+        const successElement = document.getElementById('success-rate');
+        if (successElement) {
+            successElement.textContent = successRate + "%";
+        }
+        
+        // Update user level based on completed levels
+        updateUserLevelTag(totalLevelsCompleted);
+    }
+
+    // Initialize loading of all subjects
+    subjects.forEach(subject => {
+        loadSubjectProgress(subject);
+    });
+    
+    function updateUserLevelTag(totalLevelsCompleted) {
+        const userLevelBadge = document.getElementById('user-level-badge');
+        let badgeText = 'Learner';
+        
+        if (totalLevelsCompleted >= 240) {
+            badgeText = 'Grandmaster';
+        } else if (totalLevelsCompleted >= 180) {
+            badgeText = 'Master';
+        } else if (totalLevelsCompleted >= 120) {
+            badgeText = 'Expert';
+        } else if (totalLevelsCompleted >= 60) {
+            badgeText = 'Advanced';
+        } else if (totalLevelsCompleted > 0) {
+            badgeText = 'Intermediate';
+        }
+        
+        userLevelBadge.textContent = badgeText;
+    }
+
+    function updateSubjectStats(subject, data) {
+        // Existing function remains the same
+        const currentLevel = data.levels.length > 0 ? Math.max(...data.levels.map(l => l.level)) + 1 : 1;
+        const completedLevels = data.levels.length;
+        const avgScore = data.average_score || 0;
+
+        document.getElementById(`${subject}-current-level`).textContent = currentLevel;
+        document.getElementById(`${subject}-completed-levels`).textContent = completedLevels;
+        document.getElementById(`${subject}-avg-score`).textContent = avgScore.toFixed(1) + "%";
+
+        // Update level button styles and scores
+        const levelButtons = document.querySelectorAll(`.${subject}-level`);
+        levelButtons.forEach((button, index) => {
+            const level = index + 1;
+            const levelData = data.levels.find(l => l.level === level);
+            
+            if (levelData) {
+                button.classList.add('completed');
+                button.textContent = `Level ${level} (${levelData.score}/20)`;
+            } else {
+                button.classList.remove('completed');
+                button.textContent = `Level ${level}`;
+            }
+        });
+    }
+
+    // Event handlers for level buttons
+    const levelButtons = document.querySelectorAll('.level-button');
+    levelButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const subject = this.classList.contains('math-level') ? 'math' : 
+                        this.classList.contains('physics-level') ? 'physics' : 
+                        this.classList.contains('chemistry-level') ? 'chemistry' :
+                        this.classList.contains('english-level') ? 'english' :
+                        this.classList.contains('computer-level') ? 'computer' : 'environment';
+            const level = parseInt(this.textContent.replace(/Level (\d+).*/, '$1'));
+            
+            // Redirect to the level details page
+            window.location.href = `/level-details/${subject}/${level}`;
+        });
+    });
+
+    // Listen for quiz restart events
+    window.addEventListener('quizRestart', function(event) {
+        const subject = event.detail.subject;
+        resetSubjectProgress(subject);
+    });
+
+    function resetSubjectProgress(subject) {
+        // Reset the stats in the UI
+        document.getElementById(`${subject}-current-level`).textContent = '1';
+        document.getElementById(`${subject}-completed-levels`).textContent = '0';
+        document.getElementById(`${subject}-avg-score`).textContent = '0.0';
+        
+        // Reset level button styles
+        const levelButtons = document.querySelectorAll(`.${subject}-level`);
+        levelButtons.forEach((button, index) => {
+            button.classList.remove('completed');
+            button.textContent = `Level ${index + 1}`;
+        });
+        
+        // Clear badges
+        const badgesContainer = document.getElementById(`${subject}-badges`);
+        if (badgesContainer) {
+            badgesContainer.innerHTML = `
+                <div class="no-badges-message">
+                    Complete levels to earn achievement badges!
+                </div>
+            `;
+        }
+
+        // Send request to backend to reset progress
+        fetch(`/reset-progress/${subject}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log(`Successfully reset progress for ${subject}`);
+                // Reload all subject progress to update total stats
+                subjects.forEach(s => loadSubjectProgress(s));
+            } else {
+                console.error(`Failed to reset progress for ${subject}`);
+            }
+        })
+        .catch(error => {
+            console.error(`Error resetting ${subject} progress:`, error);
+        });
+    }
+});
+
+function calculateEarnedBadges(levels) {
+    const badges = [];
+    
+    // Check each level individually for badges
+    levels.forEach(levelData => {
+        // Perfect score badge (score = 10)
+        if (levelData.score === 20) {
+            badges.push({
+                name: 'Perfect Scorer',
+                description: `Achieved a perfect score in Level ${levelData.level}!`,
+                icon: 'fa-crown',
+                level: levelData.level,
+                color: null  // Will use subject color as default
+            });
+        }
+        
+        // Excellence badge (score >= 7.5)
+        if (levelData.score >= 7.5) {
+            badges.push({
+                name: 'Excellence',
+                description: `Achieved excellence in Level ${levelData.level}!`,
+                icon: 'fa-medal',
+                level: levelData.level,
+                color: null
+            });
+        }
+        
+        // Check for improvement (three consecutive increasing scores)
+        if (levelData.level >= 3) {
+            const prevTwo = levels
+                .filter(l => l.level >= levelData.level - 2 && l.level < levelData.level)
+                .sort((a, b) => a.level - b.level);
+            
+            if (prevTwo.length === 2 &&
+                prevTwo[1].score > prevTwo[0].score &&
+                levelData.score > prevTwo[1].score) {
+                badges.push({
+                    name: 'Rising Star',
+                    description: `Showed consistent improvement through Level ${levelData.level}!`,
+                    icon: 'fa-star',
+                    level: levelData.level,
+                    color: null
+                });
+            }
+        } 
+    });
+    
+    // Sort badges by level, most recent first
+    return badges.sort((a, b) => b.level - a.level);
+}
+
+function displaySubjectBadges(subject, data) {
+    const container = document.getElementById(`${subject}-badges`);
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    if (!data.levels || data.levels.length === 0) {
+        container.innerHTML = '<div class="no-badges">Complete levels to earn badges</div>';
+        return;
+    }
+    
+    const earnedBadges = calculateEarnedBadges(data.levels);
+    
+    if (earnedBadges.length === 0) {
+        container.innerHTML = '<div class="no-badges">Complete levels to earn badges</div>';
+        return;
+    }
+    
+    earnedBadges.forEach(badge => {
+        const badgeElement = document.createElement('div');
+        badgeElement.className = `badge-earned ${badge.name.toLowerCase().replace(' ', '-')}`;
+        
+        // Create icon
+        const icon = document.createElement('i');
+        icon.className = `fas ${badge.icon}`;
+        badgeElement.appendChild(icon);
+        
+        // Create tooltip
+        const tooltip = document.createElement('div');
+        tooltip.className = 'badge-tooltip';
+        tooltip.textContent = `${badge.name}: ${badge.description}`;
+        badgeElement.appendChild(tooltip);
+        
+        container.appendChild(badgeElement);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Select all certificate buttons
+    const certificateButtons = document.querySelectorAll('.certificate-button');
+    
+    // Add click event listener to each button
+    certificateButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // Create celebration animation
+            createCelebration(this);
+        });
+    });
+    
+    // Function to create celebration animation
+    function createCelebration(button) {
+        // Create container for confetti
+        const container = document.createElement('div');
+        container.className = 'confetti-container';
+        button.parentNode.appendChild(container);
+        
+        // Create multiple confetti pieces
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.backgroundColor = getRandomColor();
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            confetti.style.animationDelay = Math.random() + 's';
+            container.appendChild(confetti);
+        }
+        
+        // Remove confetti after animation completes
+        setTimeout(() => {
+            container.remove();
+        }, 5000);
+    }
+    
+    // Helper function to generate random colors
+    function getRandomColor() {
+        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const certificateButtons = document.querySelectorAll('.certificate-button');
+    
+    certificateButtons.forEach(button => {
+        // Create confetti container
+        const confettiContainer = document.createElement('div');
+        confettiContainer.className = 'confetti-container';
+        button.appendChild(confettiContainer);
+        
+        // Create initial set of confetti particles
+        for (let i = 0; i < 30; i++) {
+            createConfettiParticle(confettiContainer);
+        }
+        
+        // Hover event
+        button.addEventListener('mouseenter', function() {
+            // Start the confetti animation loop
+            this.setAttribute('data-confetti-active', 'true');
+            animateConfetti(confettiContainer);
+        });
+        
+        // Mouse leave event
+        button.addEventListener('mouseleave', function() {
+            // Stop the confetti animation loop
+            this.setAttribute('data-confetti-active', 'false');
+            
+            // Reset all particles
+            const particles = confettiContainer.querySelectorAll('.confetti-particle');
+            particles.forEach(particle => {
+                particle.style.animation = 'none';
+                particle.style.opacity = '0';
+            });
+        });
+    });
+    
+    // Function to create a single confetti particle
+    function createConfettiParticle(container) {
+        const particle = document.createElement('div');
+        particle.className = 'confetti-particle';
+        particle.style.backgroundColor = getRandomColor();
+        particle.style.width = Math.floor(Math.random() * 6 + 4) + 'px';
+        particle.style.height = Math.floor(Math.random() * 6 + 4) + 'px';
+        particle.style.left = (Math.random() * 100) + '%';
+        
+        // Set random transform variables for animation
+        const tx = (Math.random() * 50 - 25) + 'px';
+        const rot = Math.random() * 360 * (Math.random() > 0.5 ? 1 : -1) + 'deg';
+        particle.style.setProperty('--tx', tx);
+        particle.style.setProperty('--rot', rot);
+        
+        container.appendChild(particle);
+        return particle;
+    }
+    
+    // Function to animate confetti in a loop
+    function animateConfetti(container) {
+        const button = container.closest('.certificate-button');
+        if (button.getAttribute('data-confetti-active') !== 'true') return;
+        
+        const particles = container.querySelectorAll('.confetti-particle');
+        
+        // Animate a subset of particles
+        for (let i = 0; i < 5; i++) {
+            const randomParticle = particles[Math.floor(Math.random() * particles.length)];
+            
+            // Reset position and animation
+            randomParticle.style.animation = 'none';
+            randomParticle.offsetHeight; // Force reflow
+            
+            // Update random properties
+            const tx = (Math.random() * 50 - 25) + 'px';
+            const rot = Math.random() * 360 * (Math.random() > 0.5 ? 1 : -1) + 'deg';
+            randomParticle.style.setProperty('--tx', tx);
+            randomParticle.style.setProperty('--rot', rot);
+            
+            // Start animation
+            randomParticle.style.animation = 'confettiFall 1.5s ease-out forwards';
+        }
+        
+        // Continue the loop
+        setTimeout(() => {
+            animateConfetti(container);
+        }, 200);
+    }
+    
+    // Helper function to get random colors
+    function getRandomColor() {
+        const colors = [
+            '#FFC700', // Gold
+            '#FF4791', // Pink
+            '#00C2FF', // Blue
+            '#46FF00', // Green
+            '#FF3C00', // Red
+            '#9B26FF'  // Purple
+        ];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+});
+</script>
+{% endblock %}

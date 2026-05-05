@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Certificate of Completion - {{ subject_name }}</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Include the Google font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366F1;
+            --primary-dark: #4338CA;
+            --secondary: #10B981;
+            --accent: #F43F5E;
+        }
+
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            font-family: 'Georgia', serif;
+            background: white;
+            padding: 20px;
+            overflow: hidden; /* For confetti */
+        }
+
+        .certificate {
+            width: 1000px;
+            height: 600px;
+            position: relative;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5ff 100%);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 50px;
+        }
+
+        /* Geometric Background Elements */
+        .geometric-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .square {
+            position: absolute;
+        }
+
+        .triangle {
+            position: absolute;
+        }
+
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(45deg, rgba(99, 102, 241, 0.1), rgba(16, 185, 129, 0.1));
+            top: -100px;
+            left: -100px;
+        }
+
+        .triangle-1 {
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-bottom: 240px solid rgba(244, 63, 94, 0.2);
+            top: 170px;
+            left: -80px;
+            position: absolute;
+            transform: rotate(15deg);
+        }
+
+        .triangle-2 {
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-bottom: 240px solid rgba(244, 63, 94, 0.2);
+            bottom: 170px;
+            right: -140px;
+            position: absolute;
+            transform: rotate(100deg);
+        }
+
+        .square-1 {
+            width: 200px;
+            height: 200px;
+            background: rgba(16, 185, 129, 0.125);
+            bottom: -50px;
+            left: -50px;
+            transform: rotate(45deg);
+        }
+
+        .square-2 {
+            width: 200px;
+            height: 200px;
+            background: rgba(16, 185, 129, 0.125);
+            top: -50px;
+            right: -40px;
+            transform: rotate(55deg);
+        }
+
+        .circle-2 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(45deg, rgba(16, 185, 129, 0.1), rgba(99, 102, 241, 0.1));
+            bottom: -100px;
+            right: -100px;
+        }
+
+        .dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .wave {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(-45deg, rgba(244, 63, 94, 0.05), rgba(16, 185, 129, 0.05));
+            border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            font-family: 'Garamond', serif;
+        }
+
+        .title {
+            font-size: 2.8em;
+            margin-top: -15px;
+            margin-bottom: 20px;
+            font-weight: 800;
+            color: var(--secondary);
+            font-family: 'Garamond', serif;
+        }
+
+        .recipient {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5em;
+            color: #333;
+            margin-top: 50px;
+            margin-bottom: -10px; 
+            font-weight: 600;
+        }
+
+        .description {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 80%;
+        }
+
+        .highlight {
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(16, 185, 129, 0.1));
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }   
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.2em;
+            color: var(--primary-dark);
+            font-weight: bold;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 100%;
+            padding: 0 50px;
+        }
+
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 100px;
+            align-items: flex-end;
+        }
+
+        .signature {
+            text-align: center;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Fixed signature image handling */
+        .signature-img-container {
+            height: 80px;
+            width: 200px;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .signature-img {
+            max-width: 150%;
+            max-height: 150%;
+            object-fit: contain;
+            position: absolute;
+            margin-bottom: -40px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Special handling for stamp */
+        .stamp-img-container {
+            height: 100px;
+            width: 100px;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .stamp-img {
+            max-width: 150%;
+            max-height: 150%;
+            object-fit: contain;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            margin-bottom: -40px;
+            transform: translateX(-50%) rotate(-15deg);
+        }
+
+        .sign-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            margin-bottom: 5px;
+        }
+
+        .sign-title {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .border {
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+        }
+        
+        /* For PDF only - hide the download link */
+        @media print {
+            .download-link {
+                display: none;
+            }
+        }
+
+        /* New Download Button Styles */
+        .download-link {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-family: 'Arial', sans-serif;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 100;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .download-link:hover {
+            transform: translateX(-50%) translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+
+        /* Loading spinner for download */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        .download-icon {
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .download-text {
+            display: inline-block;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        /* Confetti Container */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* Confetti Piece */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f2d74e;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="confetti-container" id="confettiContainer"></div>
+    
+    <a href="#" class="download-link" id="downloadCertificate">
+        <i class="fas fa-download download-icon"></i>
+        <span class="download-text">Download Certificate</span>
+        <span class="spinner" id="downloadSpinner"></span>
+    </a>
+    
+    <div class="certificate" id="certificateContainer">
+        <!-- Geometric Background -->
+        <div class="geometric-elements">
+            <div class="dots"></div>
+            <div class="circle circle-1"></div>
+            <div class="circle circle-2"></div>
+            <div class="square square-1"></div>
+            <div class="square square-2"></div>
+            <div class="triangle triangle-1"></div>
+            <div class="triangle triangle-2"></div>
+            <div class="wave"></div>
+        </div>
+
+        <!-- Border -->
+        <div class="border"></div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <div class="logo">Quizie</div>
+                <h1 class="title">Certificate of Completion</h1>
+                <div class="recipient">{{ username }}</div>
+            </div>
+
+            <div class="description">
+                Has successfully completed <span class="highlight">{{ level_completed }} levels</span> of 
+                <span class="highlight">{{ subject_name }}</span>
+                with outstanding performance and dedication to learning.
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-label">Starting Date</div>
+                    <div class="stat-value">{{ starting_date }}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Completion Date</div>
+                    <div class="stat-value">{{ completion_date }}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Time Invested</div>
+                    <div class="stat-value">{{ time_invested }}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Average Score</div>
+                    <div class="stat-value">{{ average_score }}</div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="signatures">
+                    <div class="signature">
+                        <div class="signature-img-container">
+                            <img src="{{ url_for('static', filename='img/signature.png') }}" alt="Director Signature" class="signature-img">
+                        </div>
+                        <div class="sign-line"></div>
+                        <div class="sign-title">Director</div>
+                    </div>
+                    <div class="signature">
+                        <div class="stamp-img-container">
+                            <img src="{{ url_for('static', filename='img/stamp.png') }}" alt="Official Stamp" class="stamp-img">
+                        </div>
+                        <div class="sign-line"></div>
+                        <div class="sign-title">Stamp</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create the confetti animation
+        createConfetti();
+        
+        // Preload images to ensure they're fully loaded before capture
+        const preloadImages = () => {
+            return new Promise((resolve) => {
+                const signatureImg = new Image();
+                const stampImg = new Image();
+                let loadedImages = 0;
+                
+                const checkAllLoaded = () => {
+                    loadedImages++;
+                    if (loadedImages === 2) resolve();
+                };
+                
+                signatureImg.onload = checkAllLoaded;
+                stampImg.onload = checkAllLoaded;
+                
+                signatureImg.src = document.querySelector('.signature-img').src;
+                stampImg.src = document.querySelector('.stamp-img').src;
+            });
+        };
+        
+        // Get the download link and certificate container
+        const downloadLink = document.getElementById('downloadCertificate');
+        const certificateContainer = document.getElementById('certificateContainer');
+        const downloadSpinner = document.getElementById('downloadSpinner');
+        const downloadText = document.querySelector('.download-text');
+        const downloadIcon = document.querySelector('.download-icon');
+        
+        // Add click event listener to the download link
+        downloadLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Show loading spinner
+            downloadSpinner.style.display = 'inline-block';
+            downloadIcon.style.display = 'none';
+            downloadText.textContent = 'Processing...';
+            
+            // Hide the download button temporarily for the screenshot
+            downloadLink.style.visibility = 'hidden';
+            
+            // Wait for images to load
+            preloadImages().then(() => {
+                // Use html2canvas to take a screenshot of the certificate
+                html2canvas(certificateContainer, {
+                    scale: 2, // Higher scale for better quality
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: null
+                }).then(canvas => {
+                    // Show the download button again
+                    downloadLink.style.visibility = 'visible';
+                    
+                    // Create a download link for the canvas image
+                    const imageURL = canvas.toDataURL('image/png');
+                    const downloadElement = document.createElement('a');
+                    
+                    // Set download attributes
+                    downloadElement.href = imageURL;
+                    downloadElement.download = '{{ subject_name|lower|replace(" ", "_") }}_certificate.png';
+                    
+                    // Append to document, click it, and remove it
+                    document.body.appendChild(downloadElement);
+                    downloadElement.click();
+                    document.body.removeChild(downloadElement);
+                    
+                    // Hide loading spinner, show icon
+                    downloadSpinner.style.display = 'none';
+                    downloadIcon.style.display = 'inline-block';
+                    downloadText.textContent = 'Download Certificate';
+                }).catch(error => {
+                    console.error('Error generating certificate:', error);
+                    downloadLink.style.visibility = 'visible';
+                    downloadSpinner.style.display = 'none';
+                    downloadIcon.style.display = 'inline-block';
+                    downloadText.textContent = 'Download Failed';
+                    
+                    // Reset after 3 seconds
+                    setTimeout(() => {
+                        downloadText.textContent = 'Download Certificate';
+                    }, 3000);
+                });
+            });
+        });
+        
+        // Confetti Animation Functions
+        function createConfetti() {
+            const confettiContainer = document.getElementById('confettiContainer');
+            const colors = ['#f2d74e', '#95c3de', '#ff9a91', '#f2789f', '#a3de95', '#9d8cff'];
+            const shapes = ['circle', 'square', 'triangle'];
+            
+            // Create confetti pieces from both sides
+            createConfettiSide(confettiContainer, colors, shapes, 'left');
+            createConfettiSide(confettiContainer, colors, shapes, 'right');
+        }
+        
+        function createConfettiSide(container, colors, shapes, side) {
+            const count = 100; // Number of confetti pieces per side
+            
+            for (let i = 0; i < count; i++) {
+                // Create confetti element
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // Randomize confetti properties
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                const size = Math.random() * 10 + 5;
+                
+                // Apply random styles
+                confetti.style.backgroundColor = color;
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                
+                // Set different shapes
+                if (shape === 'circle') {
+                    confetti.style.borderRadius = '50%';
+                } else if (shape === 'triangle') {
+                    confetti.style.width = '0';
+                    confetti.style.height = '0';
+                    confetti.style.backgroundColor = 'transparent';
+                    confetti.style.borderLeft = `${size/2}px solid transparent`;
+                    confetti.style.borderRight = `${size/2}px solid transparent`;
+                    confetti.style.borderBottom = `${size}px solid ${color}`;
+                }
+                
+                // Set initial position based on side
+                const startX = side === 'left' ? 0 : window.innerWidth;
+                confetti.style.left = `${startX}px`;
+                confetti.style.top = `-${size}px`;
+                
+                // Append to container
+                container.appendChild(confetti);
+                
+                // Animate with GSAP
+                const duration = Math.random() * 3 + 2;
+                const delay = Math.random() * 5;
+                
+                // Different animation paths based on side
+                const xMovement = side === 'left' 
+                    ? Math.random() * window.innerWidth * 0.6 
+                    : -Math.random() * window.innerWidth * 0.6;
+                
+                gsap.to(confetti, {
+                    x: xMovement,
+                    y: window.innerHeight + size,
+                    rotation: Math.random() * 360,
+                    duration: duration,
+                    delay: delay,
+                    ease: "power1.out",
+                    onComplete: function() {
+                        // Remove confetti after animation
+                        container.removeChild(confetti);
+                        
+                        // Create new confetti to maintain ongoing animation
+                        setTimeout(() => {
+                            const newConfetti = confetti.cloneNode(true);
+                            newConfetti.style.top = `-${size}px`;
+                            newConfetti.style.left = `${startX}px`;
+                            container.appendChild(newConfetti);
+                            
+                            gsap.to(newConfetti, {
+                                x: xMovement,
+                                y: window.innerHeight + size,
+                                rotation: Math.random() * 360,
+                                duration: duration,
+                                ease: "power1.out",
+                                onComplete: function() {
+                                    container.removeChild(newConfetti);
+                                }
+                            });
+                        }, Math.random() * 2000);
+                    }
+                });
+            }
+        }
+    });
+    </script>
+</body>
+</html>
