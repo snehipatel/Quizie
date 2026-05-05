@@ -3,3 +3,4 @@ Flask-SQLAlchemy
 PyMySQL
 gunicorn
 google-generativeai
+Flask-Migrate
