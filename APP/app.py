@@ -1,4 +1,11 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session, send_file, make_response
+import os
+import sys
+
+# Add the current directory to sys.path to allow imports from local modules (forms, ai_question_generator, etc.)
+# This ensures that imports work both locally and when deployed on Render.
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from functools import wraps
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -17,7 +24,6 @@ from typing import Optional, Dict, Any
 from flask import session
 from datetime import timedelta
 import pdfkit
-import os
 from flask_login import login_required, current_user, login_user, logout_user
 import traceback
 import secrets
@@ -35,7 +41,6 @@ app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'
 
 # Force UTF-8 output on Windows to avoid charmap encoding errors in print()
-import sys
 if sys.stdout.encoding != 'utf-8':
     sys.stdout.reconfigure(encoding='utf-8')
     sys.stderr.reconfigure(encoding='utf-8')
