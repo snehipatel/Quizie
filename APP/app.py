@@ -59,7 +59,7 @@ except OSError:
     print("[Warning] wkhtmltopdf not found — PDF certificate generation will be unavailable.")
 
 # Configure database — reads from .env (TiDB Cloud or any MySQL-compatible cloud)
-_db_uri = os.getenv('DATABASE_URI', 'mysql+pymysql://root:Snehi@localhost/quizie')
+_db_uri = os.getenv('DATABASE_URI') or os.getenv('DATABASE_URL') or 'mysql+pymysql://root:Snehi@localhost/quizie'
 app.config['SQLALCHEMY_DATABASE_URI'] = _db_uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # TiDB Cloud requires SSL; these engine options are ignored for plain local MySQL
