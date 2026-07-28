@@ -41,7 +41,7 @@
 
 ## 🧠 Overview
 
-**Quizie** is a next-generation web application designed to revolutionize competitive exam preparation (such as CET). Combining the power of **Google Gemini 2.0 / Flash AI** with dynamic level progression, Quizie generates context-aware, topic-specific practice questions on the fly while caching results to maximize speed and cost efficiency.
+**Quizie** is a next-generation web application designed to revolutionize competitive exam preparation, specifically created for the **DDCET (Diploma to Degree Common Entrance Test)**. Combining the power of **Google Gemini 2.0 / Flash AI** with dynamic level progression, Quizie generates context-aware, topic-specific practice questions on the fly while caching results to maximize speed and cost efficiency.
 
 Users can test their knowledge across multiple subjects, level up through 50 progressive difficulty tiers, track their progress in real-time, and download verified **PDF Certificates** upon milestone completions.
 
@@ -50,7 +50,8 @@ Users can test their knowledge across multiple subjects, level up through 50 pro
 ## 💡 Problem, Solution & Key Learnings
 
 ### 🎯 What Problem Did We Solve?
-- **Static & Repetitive Question Banks**: Traditional quiz platforms rely on fixed, static databases with small question pools, leading to repetitive questions that don't match evolving CET exam patterns.
+- **Scarcity of DDCET Exam Resources**: When I began developing this project, the **DDCET (Diploma to Degree Common Entrance Test)** was a newly introduced exam. Because of its novelty, there was a severe lack of quality study materials, structured question banks, and practice test platforms available for students. I created Quizie specifically to solve this problem and provide aspirants with an intelligent, accessible practice environment.
+- **Static & Repetitive Question Banks**: Existing conventional quiz tools rely on small, fixed databases, leading to repetitive questions that fail to match evolving DDCET syllabus standards.
 - **High Latency & Costs of Real-Time AI**: Querying LLM APIs directly on every user attempt causes 3-5+ second delays per question and results in expensive API usage overhead.
 - **Lack of Structured Learning Pathways**: Unorganized quiz sets make it difficult for students to measure linear skill progression across specific sub-topics.
 - **Missing Proof of Achievement**: Platforms rarely provide automated, verifiable proof of concept mastery for milestone accomplishments.
