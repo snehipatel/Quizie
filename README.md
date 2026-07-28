@@ -13,7 +13,6 @@
     <img src="https://img.shields.io/badge/Flask-3.1.3-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask" />
     <img src="https://img.shields.io/badge/Google%20Gemini%20AI-1.75-8E75B2?style=for-the-badge&logo=googlecloud&logoColor=white" alt="Gemini AI" />
     <img src="https://img.shields.io/badge/Database-TiDB%20%2F%20MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
-    <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License" />
   </p>
 
 </div>
@@ -35,7 +34,6 @@
   - [Database Setup & Migrations](#database-setup--migrations)
   - [Running the Application](#running-the-application)
 - [Core Features Deep Dive](#-core-features-deep-dive)
-- [License](#-license)
 
 ---
 
@@ -277,10 +275,6 @@ Contributions are what make the open-source community an incredible place to lea
 
 ---
 
-## 📄 License
-
-Distributed under the **MIT License**. See `LICENSE` for more information.
-
 <div align="center">
-  <p>Made with ❤️ for students preparing for competitive exams.</p>
+  <p>Made with ❤️ for students preparing for DDCET.</p>
 </div>
